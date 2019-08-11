@@ -23,6 +23,9 @@ pop_list = []
 # A list to contain all moms
 moms = []
 
+# A mechanism to link moms in the master list to their names
+mom_dict = {}
+
 # A list to contain all offspring
 offspring = []
 
@@ -211,10 +214,24 @@ class Momizard(object):
 		super().__init__()
 		self.name = name
 		self.weight_impact = weight_impact
+		self.weight_impact_range = [-1,1]
+		
 		self.color_impact = color_impact
+		self.color_impact_range = [-1,1]
+		
 		self.tail_flame_height_impact = tail_flame_height_impact
+		self.tail_flame_height_impact_range = [-1,1]
+		
 		self.moves_known_impact = moves_known_impact
+		self.moves_known_impact_range = [-1,1]
+
 		self.index = "has a 'mom' index"
+		self.traits_of_impact = [
+		"weight_impact",
+		"adult_weight_impact",
+		"tail_flame_height_impact",
+		"moves_known_impact"
+		]
 
 
 ### END CLASSES ###
@@ -235,9 +252,17 @@ for pokemon in pop_list:
 	if mom_roll == 1:
 		pokemon.is_mom = True
 	if pokemon.is_mom == True:
-		pokemon = Momizard()
+		saved = pokemon.name
+		saved_mom = pokemon.is_mom
+		pop_list.pop(pop_list.index(pokemon))
+		new_mom = Momizard()
+		new_mom.name = saved
+		new_mom.is_mom = saved_mom
+		pop_list.append(new_mom)
 
-
+for pokemon in pop_list:
+	if isinstance(pokemon, Momizard):
+		print("There's a momizard here.")
 
 
 ### Assigns Charizards their traits
@@ -272,17 +297,17 @@ for pokemon in pop_list:
 	# Assign the non-continuous/non-float traits binary or integer values
 	#pokemon.moves_known = random.randint(0,20)
 
-	# Checks to see who the moms and offspring are and assigns them to their respective lists
-	if pokemon.is_mom:
-		moms.append(pokemon)
-	else:
-		offspring.append(pokemon)
-
 	# Assigns an index based on whether or not the pokemon is a mother
 	if not pokemon.is_mom:
 		pokemon.index = i
 	elif pokemon.is_mom:
 		pokemon.mom_index = i
+
+	# Checks to see who the moms and offspring are and assigns them to their respective lists
+	if pokemon.is_mom:
+		moms.append(pokemon)
+	else:
+		offspring.append(pokemon)
 	
 	# Increments forward
 	i += 1
@@ -290,11 +315,22 @@ for pokemon in pop_list:
 
 
 
+# Generate a mother's contribution (based on a random distribution)
+for mom in moms:
+	for trait in mom.__dict__:
+		if trait in mom.traits_of_impact:
+			print("Hi!")
+			trait_range = str(trait+"_range")
+			trait = random.uniform(mom.__dict__[trait_range][0], mom.__dict__[trait_range][1])
 
+
+
+# Assign moms to offspring
 for baby in offspring:
 	baby.mom_identity = random.randint(0, len(moms)-1)
 	baby.mom_identity = moms[baby.mom_identity].name
-	print("{0}'s mom is {1}!".format(pokemon.name, pokemon.mom_identity))
+	# Print statement used for debugging commented-out below
+	#print("{0}'s mom is {1}!".format(baby.name, baby.mom_identity))
 
 
 
@@ -303,23 +339,25 @@ for baby in offspring:
 # Prints pokemon's stats--mostly for debugging right now.
 for pokemon in pop_list:
 	print("Name: " + pokemon.name.title())
-	for trait in pokemon.__dict__:
-		if "range" not in trait and (trait in pokemon.continuous_traits):
-			if isinstance(pokemon.__dict__[trait], float):
-				print(trait.title() + ":", str(pokemon.__dict__[trait])[:4])
-			#elif str(trait) == "is_mom":
-			#	pass
-			else:	
-				print(trait.title() + ":", str(pokemon.__dict__[trait]).title())
+	if pokemon.is_mom == False:
+		for trait in pokemon.__dict__:
+			if "range" not in trait and (trait in pokemon.continuous_traits):
+				if isinstance(pokemon.__dict__[trait], float):
+					print(trait.title() + ":", str(pokemon.__dict__[trait])[:4])
+				#elif str(trait) == "is_mom":
+				#	pass
+				else:	
+					print(trait.title() + ":", str(pokemon.__dict__[trait]).title())
 	print("")
 
 
 
 
-
+# Counts the number of moms and offspring (for debugging)
 print("There are " + str(len(moms)) + " mothers and " + str(len(offspring)) + " offspring!")
 print("")
 
+# Generate lists that represent a single trait value for each individual in the population
 color_intensity_list = get_color_intensity_list(offspring)
 adult_weight_list = get_adult_weight_list(offspring)
 tail_flame_height_list = get_tail_flame_height_list(offspring)
@@ -330,61 +368,101 @@ moves_known_list = get_moves_known_list(offspring)
 # Since 'moves known' has to round to a whole number, all its elements get converted to integers
 moves_known_list = list(map(int, moves_known_list))
 
-# Calculates the average values for traits among offspring
-avg_color_intensity = calculate_average_color_intensity(offspring)
-avg_adult_weight = calculate_average_adult_weight(offspring)
-avg_tail_flame_height = calculate_average_tail_flame_height(offspring)
-avg_moves_known = calculate_average_moves_known(offspring)
 
-# Calculates the variances with respect to a given trait within a population of offspring
-color_intensity_var = numpy.var(color_intensity_list)
-adult_weight_var = numpy.var(adult_weight_list)
-tail_flame_height_var = numpy.var(tail_flame_height_list)
-moves_known_var = numpy.var(moves_known_list)
+# Calculates the average values (strictly genetic) for traits among offspring
+avg_genetic_color_intensity = calculate_average_color_intensity(offspring)
+avg_genetic_adult_weight = calculate_average_adult_weight(offspring)
+avg_genetic_tail_flame_height = calculate_average_tail_flame_height(offspring)
+avg_genetic_moves_known = calculate_average_moves_known(offspring)
 
-
-
+# Calculates the additive genetic variance with respect to a given trait within a population of offspring
+color_intensity_VA = numpy.var(color_intensity_list)
+adult_weight_VA = numpy.var(adult_weight_list)
+tail_flame_height_VA = numpy.var(tail_flame_height_list)
+moves_known_VA = numpy.var(moves_known_list)
 
 
-print("The average color intensity is {0}.".format(str(avg_color_intensity)[:4]))
-print("The variance in color intensity is {0}.".format(str(color_intensity_var)[:4]))
+for mom in moms:
+	mom_dict[mom.name] = mom
+
+#print(mom_dict)
+
+
+# Changes each trait in each individual Charizard based on its maternal effects; this is confusing, so I'll break it down comment-by-comment
+for pokemon in offspring:
+
+	# Looks at each trait in a single pokemon
+	for trait in pokemon.__dict__:
+
+		# Checks to see if the trait is in the "continuous traits" list
+		if trait in pokemon.continuous_traits:
+
+			# Sets the genetic trait value equal to the ORIGINAL trait value (what it was BEFORE mom or other influences)
+			genetic_trait_value = pokemon.__dict__[trait]
+
+			# Checks to see that mom's identity is present in the mom_dict dictionary (it should be--all the  moms ought to be there)
+			if pokemon.mom_identity in mom_dict.keys():
+
+				# Creates a short-hand for ease of use--just reducing characters
+				my_mom = pokemon.mom_identity
+
+				# Looks at each character that mom possesses to check and see whether it's equal to the trait (+ "impact"--the attribute mom possesses will be "trait_impact") in question
+				for attribute in mom_dict[my_mom].__dict__:
+					if attribute == (trait + "_impact"):
+
+						#print("The original trait value is: " + str(pokemon.__dict__[trait]))
+						# If the offspring trait is equal to the mom's attribute, it assigns the value of the attribute to "mom's influence"
+						moms_influence = mom_dict[my_mom].__dict__[attribute]
+						#print("Mom's influence (proportion): " + str(moms_influence))
+						
+						# Multiplies mom's influence by the genetic trait value to get a fraction of the original value
+						mom_effect = moms_influence*genetic_trait_value
+						#print("Mom's actual effect: " + str(mom_effect))
+						
+						# Gives the total after mom's addition
+						new_total = mom_effect + genetic_trait_value
+						#print("The new trait value: " + str(new_total))
+						
+						# Replaces the old trait value with the new total for the pokemon (offspring)
+						pokemon.__dict__[trait] = new_total
+						#print(trait + str(pokemon.__dict__[trait]))
+						
+				
+
+
+
+
+
+
+
+print("The average color intensity is {0}.".format(str(avg_genetic_color_intensity)[:4]))
+print("The variance in color intensity is {0}.".format(str(color_intensity_VA)[:4]))
 print("The minimum color intensity in this population is {0}.".format(str(min(color_intensity_list))[:4]))
 print("The maximum color intensity in this population is {0}.".format(str(max(color_intensity_list))[:4]))
 print("")
 
-print("The average adult weight is {0}.".format(str(avg_adult_weight)[:4]))
-print("The variance in adult weight is {0}".format(str(adult_weight_var)[:4]))
+print("The average adult weight is {0}.".format(str(avg_genetic_adult_weight)[:4]))
+print("The variance in adult weight is {0}".format(str(adult_weight_VA)[:4]))
 print("The minimum adult weight in this population is {0}.".format(str(min(adult_weight_list))[:4]))
 print("The maximum adult weight in this population is {0}.".format(str(max(adult_weight_list))[:4]))
 print("")
 
 
 
-print("The average tail flame height is {0}.".format(str(avg_tail_flame_height)[:4]))
-print("The variance in tail flame height is {0}".format(str(tail_flame_height_var)[:4]))
+print("The average tail flame height is {0}.".format(str(avg_genetic_tail_flame_height)[:4]))
+print("The variance in tail flame height is {0}".format(str(tail_flame_height_VA)[:4]))
 print("The minimum tail-flame height in this population is {0}.".format(str(min(tail_flame_height_list))[:4]))
 print("The maximum tail-flame height in this population is {0}.".format(str(max(tail_flame_height_list))[:4]))
 print("")
 
 
-print("The average moves known is {0}.".format(str(avg_moves_known)[:4]))
-print("The variance in moves is {0}.".format(str(moves_known_var)[:4]))
+print("The average moves known is {0}.".format(str(avg_genetic_moves_known)[:4]))
+print("The variance in moves is {0}.".format(str(moves_known_VA)[:4]))
 print("The minimum moves known in this population is {0}.".format(str(min(moves_known_list))[:4]))
 print("The maximum moves known in this population is {0}.".format(str(max(moves_known_list))[:4]))
 print("")
 
 
-templist = []
-
-print("Moms:")
-[templist.append(baby.mom_identity.title()) for baby in offspring]
-
-print(set(templist))
-
-
-print("")
-print("Offspring:")
-[print(baby.name.title()) for baby in offspring]
 
 
 

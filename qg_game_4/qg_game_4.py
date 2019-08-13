@@ -5,25 +5,152 @@ import random
 import numpy
 
 from functions_for_qg_game_4 import *
-from qg_game_4_lists_and_dicts import *
+#from qg_game_4_lists_and_dicts import *
 from qg_game_4_classes import *
 
+#import qg_game_4_lists_and_dicts as l_and_d
 
-# Pokemon Preserve
-
-# Years ago, when big corporations began construction on natural Charizard habitats, you and many other conservationists
-# set out to rescue the Charizards and recolonized them in the Pokemon Preserve, a vast, multi-environment safe-haven for pokemon!
-
-# Now, those Charizards have given rise to the next generation, but the offspring they've produced are VERY different from what we'd expect!
-# The Preserve has tasked you with uncovering the mystery--how did we get so many crazy Charizards?!
+# 
 
 
-def produce_population():
+"""Pokemon Preserve
 
-	
+Years ago, when big corporations began construction on natural Charizard habitats, you and many other conservationists
+set out to rescue the Charizards and recolonized them in the Pokemon Preserve, a vast, multi-environment safe-haven for pokemon!
+
+Now, those Charizards have given rise to the next generation, but the offspring they've produced are VERY different from what we'd expect!
+The Preserve has tasked you with uncovering the mystery--how did we get so many crazy Charizards?!
+"""
+
+
+
+
+pop_holder_object = popHolder()
+
+
+
+
+
+pop_holder_object.generations = []
+
+
+i = len(pop_holder_object.generations)
+
+print(i)
+
+def produce_population(pop_holder):
+
+	i = len(pop_holder.generations)
 
 	### BEGIN ONE-TIME PROCESSES ###
 
+
+	### IMPORTANT LISTS ###
+
+	# A master list to hold all pokemon generated initially (unseparated into parents/offspring)
+	pop_list = []
+
+
+
+	# A list to contain all moms
+	moms = []
+
+	# A mechanism to link moms in the master list to their names
+	mom_dict = {}
+
+	# A list to contain all offspring
+	offspring = []
+
+	# A master list of all available names
+	name_list = [
+	"barry",
+	"henry",
+	"tyrone",
+	"jenny",
+	"shamia",
+	"sasquatch",
+	"hyerin",
+	"oboku",
+	"jiwon",
+	"hanzhou",
+	"matt",
+	"veronica",
+	"delaware",
+	"lloyd",
+	"buster",
+	"gob",
+	"stefanos",
+	"daenerys",
+	"draco",
+	"lucius",
+	"heimer",
+	"drax",
+	"thor",
+	"zealand",
+	"flamington",
+	"lord flamesworth",
+	"shannon",
+	"duke",
+	"robin",
+	"max power",
+	"homer",
+	"hercules",
+	"stan",
+	"lewis",
+	"emerson",
+	"brady",
+	"shaniqua",
+	"amanda",
+	"bronson",
+	"harrington",
+	"bro",
+	"d'fwan",
+	"matt",
+	"iwo",
+	"phyllis",
+	"gorgon",
+	"munchy",
+	"nemo",
+	"wakanda",
+	"panther",
+	"charles"
+	]
+
+	# A list to hold names that have been 'popped' out of the master name list
+	used_names = []
+
+
+	# Different environment names
+	env_names = [
+	"desert",
+	"forest",
+	"prairie",
+	"wetland",
+	"mountains"
+	]
+
+
+	# Creates a list that includes genetic and maternal effects
+	offspring_with_maternal_effects = []
+
+	offspring_with_maternal_and_env_effects = []
+
+
+
+
+
+
+
+	### END IMPORTANT LISTS ###
+
+
+	# Reset all relevant lists and dicts
+	offspring = []
+	offspring_with_maternal_effects = []
+	used_names = []
+	moms = []
+	mom_dict = {}
+	
 
 
 	# Creates 25 unique Charizards--not yet assigned parent of offspring status
@@ -202,11 +329,88 @@ def produce_population():
 			males.append(pokemon)
 	print("There are {0} males and {1} females in this population!".format(len(males), len(females)))
 
-	for mom in moms:
-		print(mom.species)
 
-	reset_lists(offspring, offspring_with_maternal_effects, used_names, pop_list, moms)
+	generation_data = {
+		"pop_list": pop_list,
+		"moms": moms,
+		"mom_dict": mom_dict,
+		"offspring": offspring,
+		"name_list" : name_list,
+		"used_names" : used_names,
+		"env_names" : env_names,
+		"offspring_with_maternal_effects" : offspring_with_maternal_effects,
+		"offspring_with_maternal_and_env_effects" : offspring_with_maternal_and_env_effects,
+		"color_intensity_list_for_VA" : color_intensity_list_for_VA,
+		"adult_weight_list_for_VA" : tail_flame_height_list_for_VA,
+		"moves_known_list_for_VA" : moves_known_list_for_VA,
+		"fecundity_list_for_VA" : fecundity_list_for_VA,
+
+		"avg_genetic_color_intensity" : avg_genetic_color_intensity,
+		"avg_genetic_adult_weight" : avg_genetic_adult_weight,
+		"avg_genetic_tail_flame_height" : avg_genetic_tail_flame_height,
+		"avg_genetic_fecundity" : avg_genetic_fecundity,
+		"avg_genetic_moves_known" : avg_genetic_moves_known,
+		"avg_genetic_moves_known" : avg_genetic_moves_known,
+
+		"color_intensity_VA" : color_intensity_VA,
+		"adult_weight_VA" : adult_weight_VA,
+		"tail_flame_height_VA" : tail_flame_height_VA,
+		"fecundity_VA" : fecundity_VA,
+		"moves_known_VA" : moves_known_VA,
+
+		"color_intensity_list_for_VA_and_ma" : color_intensity_list_for_VA_and_ma,
+		"adult_weight_list_for_VA_and_ma" : adult_weight_list_for_VA_and_ma,
+		"tail_flame_height_list_for_VA_and_ma" : tail_flame_height_list_for_VA_and_ma,
+		"fecundity_list_for_VA_and_ma" : fecundity_list_for_VA_and_ma,
+		"moves_known_list_for_VA_and_ma" : moves_known_list_for_VA_and_ma,
+
+		"avg_gen_and_ma_color_intensity" : avg_gen_and_ma_color_intensity,
+		"avg_gen_and_ma_adult_weight" : avg_gen_and_ma_adult_weight,
+		"avg_gen_and_ma_tail_flame_height" : avg_gen_and_ma_tail_flame_height,
+		"avg_gen_and_ma_fecundity" : avg_gen_and_ma_fecundity,
+		"avg_gen_and_ma_moves_known" : avg_gen_and_ma_moves_known
+
+
+		
+		}
 
 
 
-produce_population()
+	pop_holder.generations.append(generation_data)
+
+
+
+
+
+
+while True:
+	print("Do you want to produce a population?")
+	user_input = input("")
+	if 'y' in user_input:
+		produce_population(pop_holder_object)
+	else:
+		break
+
+
+print("Do you want to look at the generations you've produced?")
+user_input = input("")
+if 'y' in user_input and pop_holder_object.generations:
+	while True:
+		print("Which generation do you want to look at? (Type a number or 'quit'!)")
+		user_input = input("")
+		if 'quit' in user_input:
+			break
+		elif not user_input.isdigit():
+			print("Whoops--that's not a number!")
+		elif int(user_input) in range(0, len(pop_holder_object.generations) + 1):
+			gen_number = int(user_input)-1
+			print(len(pop_holder_object.generations))
+			generation = pop_holder_object.generations[gen_number]
+			get_generation_stats(generation)
+			#get_generation_stats(gen_number)
+		else:
+			print("You don't have that many generations--try again!")
+elif not pop_holder_object.generations:
+	print("You haven't made any generations yet!")
+else:
+	pass

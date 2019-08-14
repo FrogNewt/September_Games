@@ -7,13 +7,12 @@ import numpy
 
 
 
-def encounter(org1, org2):
-	if org1.species == org2.species:
-		reproduce(org1, org2)
 
 # Tries to have the 
-def reproduce(male):
-	pass
+def reproduce(org1, new_org_list, species_class):
+	for i in range(int(org1.fecundity)):
+		new_baby = species_class()
+		new_org_list.append(new_baby)
 
 def meet_predator(organism, predator):
 	if predator.attack > organism.defense:

@@ -140,18 +140,18 @@ def generate_environments(environment_class, environment_list):
 		new_env = environment_class()
 		new_env.name = temp_names[random.randint(0, len(temp_names)-1)]
 		temp_names.pop(temp_names.index(new_env.name))
-		print(new_env.name)
+		#print(new_env.name)
 		environment_list.append(new_env)
 		for trait in new_env.__dict__.keys():
 			if "_impact" in str(trait) and ("_range" not in str(trait)):
 				trait_range = str(trait)+"_range"
 				trait_range = new_env.__dict__[trait_range]
-				print(trait_range)
+				#print(trait_range)
 				trait = random.uniform(trait_range[0], trait_range[1])
-				print(trait)
+				#print(trait)
 
 		#print(environment_class.env_names)
-	print(environment_list)
+	#print(environment_list)
 
 
 def assign_environments_to_moms(mothers, environment_class, environments_list):
@@ -249,8 +249,8 @@ def add_environmental_effects(offspring_list, moms_dictionary, offspring_with_en
 
 				# Sets the genetic trait value equal to the ORIGINAL trait value (what it was BEFORE environmental influences)
 				gen_and_mom_trait_value = pokemon.__dict__[trait]
-				print("")
-				print("Starting at", trait, gen_and_mom_trait_value)
+				#print("")
+				#print("Starting at", trait, gen_and_mom_trait_value)
 
 
 ### NOTE: ALL CODE ABOVE APPLIES TO BOTH MATERNAL AND ENVIRONMENTAL EFFECTS, BUT THE CODE BELOW IS SPECIFIC TO ENVIRONMENTAL EFFECTS--BE SURE TO CHANGE IT ###
@@ -260,7 +260,7 @@ def add_environmental_effects(offspring_list, moms_dictionary, offspring_with_en
 
 					# Creates a short-hand for ease of use--just reducing characters
 					my_mom = moms_dictionary[pokemon.mom_identity]
-					print(my_mom.env.name)
+					#print(my_mom.env.name)
 
 					# Looks at each character that mom possesses to check and see whether it's equal to the trait (+ "impact"--the attribute mom possesses will be "trait_impact") in question
 					for attribute in my_mom.env.__dict__:
@@ -275,24 +275,24 @@ def add_environmental_effects(offspring_list, moms_dictionary, offspring_with_en
 
 							env_influence = attribute
 							
-							print("Env's influence (proportion): " + str(env_influence))
+							#print("Env's influence (proportion): " + str(env_influence))
 							
 							# Multiplies mom's influence by the genetic trait value to get a fraction of the original value
 							env_effect = env_influence*gen_and_mom_trait_value
 							#print("Mom's effect: ", mom_effect)
-							print("Env's actual effect: " + str(env_effect))
+							#print("Env's actual effect: " + str(env_effect))
 							
 							# Gives the total after mom's addition
 							new_total = env_effect + gen_and_mom_trait_value
 							#print("New total value: ", new_total)
-							print("The new trait value: " + str(new_total))
+							#print("The new trait value: " + str(new_total))
 							
 							# Replaces the old trait value with the new total for the pokemon (offspring)
 							pokemon.__dict__[trait] = new_total
 							#print("All this pokemon's traits: ")
 							#for trait in pokemon.__dict__:
 							#	print(trait, pokemon.__dict__[trait])
-							offspring_with_env_effects_list.append(pokemon)
+		offspring_with_env_effects_list.append(pokemon)
 
 
 
@@ -346,7 +346,7 @@ def get_generation_stats(single_generation, readability_dictionary):
 					single_generation[choice_dict[int(user_input)]] = str(single_generation[choice_dict[int(user_input)]])[:4]
 				elif isinstance(number, float):
 					single_generation[choice_dict[int(user_input)]] = str(single_generation[choice_dict[int(user_input)]])[:4]
-				print("The {0} in this population: {1}!".format(readability_dictionary[trait_link_string].title(), single_generation[choice_dict[int(user_input)]]))
+				input("The {0} in this population: {1}!".format(readability_dictionary[trait_link_string].title(), single_generation[choice_dict[int(user_input)]]))
 
 			#print("The ", generation[measurement], "is ", choice_dict[user_input])
 		

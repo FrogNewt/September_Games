@@ -86,7 +86,7 @@ class Charizard(object):
 
 		# Describes the charizard's reproductive potential--how many offspring will it produce?
 		self.fecundity = fecundity
-		self.fecundity_range = [1,100]
+		self.fecundity_range = [1,5]
 
 		# Determines whether or not this Charizard is a mom--note: all "moms" will be reassigned to "Momizard" class
 		self.is_mom = False
@@ -152,9 +152,10 @@ class Momizard(Charizard):
 
 
 class Predator(object):
-	def __init__(self, attack = 1):
-		self.attack = attack
+	def __init__(self, attack = 2):
 		self.attack_range = [1,10]
+		self.attack = random.uniform(self.attack_range[0], self.attack_range[1])
+		self.species = "predator"
 
 
 ### END CLASSES ###

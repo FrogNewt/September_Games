@@ -274,6 +274,32 @@ def give_mom_class(population_list, used_class):
 			break
 
 
+def get_generation_stats(single_generation, readability_dictionary):
+	i = 0
+	choice_dict = {}
+	for trait_string in single_generation.keys():
+		for trait_link_string in readability_dictionary.keys():
+			if trait_string==trait_link_string:
+				choice_dict[i] = trait_string
+				print(readability_dictionary[trait_link_string].title(), "(Index: " + str(i)+ ")")
+				i += 1
+	while True:
+		print("Which trait are you interested in?  (Choose the index from the choices listed above or type 'done'!)")
+		user_input = input("")
+		if 'done' in user_input:
+			break
+		for choice in choice_dict:
+			if user_input == str(choice):
+				number = single_generation[choice_dict[int(user_input)]]
+				if isinstance(number, int):
+					single_generation[choice_dict[int(user_input)]] = str(single_generation[choice_dict[int(user_input)]])[:4]
+				elif isinstance(number, float):
+					single_generation[choice_dict[int(user_input)]] = str(single_generation[choice_dict[int(user_input)]])[:4]
+				print("The {0} in this population: {1}!".format(readability_dictionary[trait_link_string].title(), single_generation[choice_dict[int(user_input)]]))
+
+			#print("The ", generation[measurement], "is ", choice_dict[user_input])
+		
+
 ### END FUNCTIONS ###
 
 

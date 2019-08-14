@@ -32,6 +32,7 @@ pop_holder_object = popHolder()
 
 
 pop_holder_object.generations = []
+pop_holder_object.readability_dict = {}
 
 
 i = len(pop_holder_object.generations)
@@ -370,13 +371,38 @@ def produce_population(pop_holder):
 		"avg_gen_and_ma_fecundity" : avg_gen_and_ma_fecundity,
 		"avg_gen_and_ma_moves_known" : avg_gen_and_ma_moves_known
 
+		}
+
+
+	readability_dict = {
+
+		"avg_genetic_color_intensity": "average color intensity due to genes",
+		"avg_genetic_adult_weight": "average adult weight due to genes",
+		"avg_genetic_tail_flame_height": "average tail flame height due to genes",
+		"avg_genetic_fecundity": "average fecundity due to genes",
+		"avg_genetic_moves_known": "average number of moves known due to genes",
+
+		"color_intensity_VA" : "additive genetic variance in color intensity",
+		"adult_weight_VA" : "additive genetic variance in adult weight",
+		"tail_flame_height_VA" : "additive genetic variance in tail flame height",
+		"fecundity_VA" : "additive genetic variance in fecundity",
+		"moves_known_VA" : "additive genetic variance in moves known",
+
+		"avg_gen_and_ma_color_intensity" : "The average combined genetic and maternal effects on color intensity",
+		"avg_gen_and_ma_adult_weight" : "The average combined genetic and maternal effects on color adult weight",
+		"avg_gen_and_ma_tail_flame_height" : "The average combined genetic and maternal effects on color tail flame height",
+		"avg_gen_and_ma_fecundity" : "The average combined genetic and maternal effects on fecundity",
+		"avg_gen_and_ma_moves_known" : "The average combined genetic and maternal effects on moves known"
+	}
 
 		
-		}
+		
 
 
 
 	pop_holder.generations.append(generation_data)
+	pop_holder.readability_key = readability_dict
+	
 
 
 
@@ -392,11 +418,12 @@ while True:
 		break
 
 
+
 print("Do you want to look at the generations you've produced?")
 user_input = input("")
 if 'y' in user_input and pop_holder_object.generations:
 	while True:
-		print("Which generation do you want to look at? (Type a number or 'quit'!)")
+		print("Which generation do you want to look at? (Choose a number 1-{0} or 'quit'!)".format(len(pop_holder_object.generations)))
 		user_input = input("")
 		if 'quit' in user_input:
 			break
@@ -405,8 +432,8 @@ if 'y' in user_input and pop_holder_object.generations:
 		elif int(user_input) in range(0, len(pop_holder_object.generations) + 1):
 			gen_number = int(user_input)-1
 			print(len(pop_holder_object.generations))
-			generation = pop_holder_object.generations[gen_number]
-			get_generation_stats(generation)
+			generation_choice = pop_holder_object.generations[gen_number]
+			get_generation_stats(generation_choice, pop_holder_object.readability_key)
 			#get_generation_stats(gen_number)
 		else:
 			print("You don't have that many generations--try again!")

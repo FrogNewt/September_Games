@@ -8,8 +8,12 @@ import numpy
 
 ### CLASSES ###
 
+class popHolder(object):
+	def __init__(self):
+		pass
+
 class Environment(object):
-	def __init__(self, name = "default environment", fecundity_impact = 0, adult_weight_impact = 1, color_intensity_impact = 1, tail_flame_height_impact = 1, moves_known_impact = 1, description = "default description"):
+	def __init__(self, name = "default environment", defense_impact = 0, fecundity_impact = 0, adult_weight_impact = 1, color_intensity_impact = 1, tail_flame_height_impact = 1, moves_known_impact = 1, description = "default description"):
 		self.name = name
 		self.adult_weight_impact = weight_impact
 		self.adult_weight_impact_range = [-1,1]
@@ -25,6 +29,12 @@ class Environment(object):
 
 		self.fecundity_impact = fecundity_impact
 		self.fecundity_impact_range = [-1,1]
+
+		self.defense_impact = defense_impact
+		self.defense_impact_range = defense_impact_range
+
+		self.predator_attack_impact = 0
+		self.predator_attack_impact_range = [-1,1]
 
 		self.description = description
 
@@ -120,6 +130,7 @@ class Momizard(Charizard):
 class Predator(object):
 	def __init__(self, attack = 1):
 		self.attack = attack
+		self.attack_range = [1,10]
 
 
 ### END CLASSES ###

@@ -59,6 +59,13 @@ def produce_population(pop_holder):
 	# A mechanism to link moms in the master list to their names
 	mom_dict = {}
 
+
+	# A list of all environment instances derived from the "Environment" class
+	environments = []
+
+	# A mechanism to link environments in the master list to their names
+	env_dict = {}
+
 	# A list to contain all offspring
 	offspring = []
 
@@ -184,7 +191,7 @@ def produce_population(pop_holder):
 
 
 	# Prints pokemon's stats--mostly for debugging right now.
-	for pokemon in pop_list:
+	"""for pokemon in pop_list:
 		print("Name: " + pokemon.name.title())
 		if pokemon.is_mom == False:
 			for trait in pokemon.__dict__:
@@ -196,13 +203,14 @@ def produce_population(pop_holder):
 					else:	
 						print(trait.title() + ":", str(pokemon.__dict__[trait]).title())
 		print("")
+		"""
 
 	# Creates a list to hold the unaltered genetic-only trait-values of organisms
 	offspring_without_maternal_effects = offspring
 
 	# Counts the number of moms and offspring (for debugging)
-	print("There are " + str(len(moms)) + " mothers and " + str(len(offspring)) + " offspring!")
-	print("")
+	#print("There are " + str(len(moms)) + " mothers and " + str(len(offspring)) + " offspring!")
+	#print("")
 
 	# Generate lists that represent a single trait value for each individual in the population
 	color_intensity_list_for_VA = get_color_intensity_list(offspring)
@@ -240,10 +248,23 @@ def produce_population(pop_holder):
 	# Creates an empty list (note: this SHOULD be available from "lists-and-dicts" but a bug has rendered that list null in the context of the 'main' function)
 	offspring_with_maternal_effects = []
 
+
+	generate_environments(Environment, environments)
+
 	add_maternal_effects(offspring, mom_dict, offspring_with_maternal_effects)
 
 	offspring_with_maternal_effects = list(set(offspring_with_maternal_effects))
 
+	assign_environments_to_moms(moms, Environment, environments)
+
+
+	assign_birth_environments(offspring_with_maternal_effects, mom_dict)
+
+	add_environmental_effects(offspring_with_maternal_effects, mom_dict, offspring_with_maternal_and_env_effects)
+
+
+
+	
 
 		# Adds the pokemon to a new, updated list of offspring
 		#offspring_with_maternal_effects.append(pokemon)
@@ -275,52 +296,14 @@ def produce_population(pop_holder):
 
 
 
-	print("The average genetic color intensity is {0}.".format(str(avg_genetic_color_intensity)[:4]))
-	print("The average genetic+maternal color intensity is {0}.".format(str(avg_gen_and_ma_color_intensity)[:4]))
-	print("The additive genetic variance in color intensity is {0}.".format(str(color_intensity_VA)[:4]))
-	print("The minimum color intensity in this population is {0}.".format(str(min(color_intensity_list_for_VA))[:4]))
-	print("The maximum color intensity in this population is {0}.".format(str(max(color_intensity_list_for_VA))[:4]))
-	print("")
-
-	print("The average genetic adult weight is {0}.".format(str(avg_genetic_adult_weight)[:4]))
-	print("The average genetic+maternal adult weight is {0}.".format(str(avg_gen_and_ma_adult_weight)[:4]))
-	print("The additive genetic variance in adult weight is {0}".format(str(adult_weight_VA)[:4]))
-	print("The minimum adult weight in this population is {0}.".format(str(min(adult_weight_list_for_VA))[:4]))
-	print("The maximum adult weight in this population is {0}.".format(str(max(adult_weight_list_for_VA))[:4]))
-	print("")
-
-
-
-	print("The average genetic tail flame height is {0}.".format(str(avg_genetic_tail_flame_height)[:4]))
-	print("The average genetic+maternal tail flame height is {0}.".format(str(avg_gen_and_ma_tail_flame_height)[:4]))
-	print("The additive genetic variance in tail flame height is {0}".format(str(tail_flame_height_VA)[:4]))
-	print("The minimum tail-flame height in this population is {0}.".format(str(min(tail_flame_height_list_for_VA))[:4]))
-	print("The maximum tail-flame height in this population is {0}.".format(str(max(tail_flame_height_list_for_VA))[:4]))
-	print("")
-
-	print("The average genetic fecundity is {0}.".format(str(avg_genetic_fecundity)[:4]))
-	print("The average genetic+maternal fecundity is {0}.".format(str(avg_gen_and_ma_fecundity)[:4]))
-	print("The additive genetic variance in fecundity is {0}".format(str(fecundity_VA)[:4]))
-	print("The minimum fecundity in this population is {0}.".format(str(min(fecundity_list_for_VA))[:4]))
-	print("The maximum fecundity in this population is {0}.".format(str(max(fecundity_list_for_VA))[:4]))
-	print("")
-
-
-	print("The average genetic moves known is {0}.".format(str(avg_genetic_moves_known)[:4]))
-	print("The average genetic+maternal moves known is {0}.".format(str(avg_gen_and_ma_moves_known)[:4]))
-	print("The additive genetic variance in moves is {0}.".format(str(moves_known_VA)[:4]))
-	print("The minimum moves known in this population is {0}.".format(str(min(moves_known_list_for_VA))[:4]))
-	print("The maximum moves known in this population is {0}.".format(str(max(moves_known_list_for_VA))[:4]))
-	print("")
-
 	print("There are currently {0} Charizards in this population!".format(len(offspring)))
 
-	print(len(offspring), "offspring")
-	print(len(name_list), "name list")
-	print(len(offspring_with_maternal_effects), "offspring_with_maternal_effects")
-	print(len(used_names), "used_names")
-	print(len(pop_list), "pop_list")
-	print(len(moms), "moms")
+	#print(len(offspring), "offspring")
+	#print(len(name_list), "name list")
+	#print(len(offspring_with_maternal_effects), "offspring_with_maternal_effects")
+	#print(len(used_names), "used_names")
+	#print(len(pop_list), "pop_list")
+	#print(len(moms), "moms")
 	males = []
 	females = []
 	for pokemon in offspring_with_maternal_effects:

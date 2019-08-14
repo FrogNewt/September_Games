@@ -131,6 +131,51 @@ def assign_traits(population_list, list_of_names, used_up_names, offspring_list,
 		# Increments forward
 		i += 1
 
+def generate_environments(environment_class, environment_list):
+	temp_names = []
+	for env in environment_class.env_names:
+		temp_names.append(env)
+
+	for environment in environment_class.env_names:
+		new_env = environment_class()
+		new_env.name = temp_names[random.randint(0, len(temp_names)-1)]
+		temp_names.pop(temp_names.index(new_env.name))
+		print(new_env.name)
+		environment_list.append(new_env)
+		for trait in new_env.__dict__.keys():
+			if "_impact" in str(trait) and ("_range" not in str(trait)):
+				trait_range = str(trait)+"_range"
+				trait_range = new_env.__dict__[trait_range]
+				print(trait_range)
+				trait = random.uniform(trait_range[0], trait_range[1])
+				print(trait)
+
+		#print(environment_class.env_names)
+	print(environment_list)
+
+
+def assign_environments_to_moms(mothers, environment_class, environments_list):
+	local_env_dict = {}
+	i = 0
+	env_names = []
+	for environment in environments_list:
+		env_names.append(environment.name)
+
+	#print(env_names)
+
+	for env in environments_list:
+		local_env_dict[i] = env
+		i += 1
+
+	for mother in mothers:
+		mother.env = random.randint(0, len(env_names)-1)
+		mother.env = local_env_dict[mother.env]
+
+
+def assign_birth_environments(offspring_list, mom_dictionary):
+	for org in offspring_list:
+		org.env_born = mom_dictionary[org.mom_identity].env
+
 
 
 def assign_moms(offspring_list, moms_list):
@@ -154,14 +199,14 @@ def add_maternal_effects(offspring_list, moms_dictionary, offspring_with_mom_eff
 
 				# Sets the genetic trait value equal to the ORIGINAL trait value (what it was BEFORE mom or other influences)
 				genetic_trait_value = pokemon.__dict__[trait]
-				print(trait,"base value: ", genetic_trait_value)
+				#print(trait,"base value: ", genetic_trait_value)
 
 				# Checks to see that mom's identity is present in the mom_dict dictionary (it should be--all the  moms ought to be there)
 				if pokemon.mom_identity in moms_dictionary.keys():
 
 					# Creates a short-hand for ease of use--just reducing characters
 					my_mom = pokemon.mom_identity
-					print(pokemon.mom_identity)
+					#print(pokemon.mom_identity)
 
 					# Looks at each character that mom possesses to check and see whether it's equal to the trait (+ "impact"--the attribute mom possesses will be "trait_impact") in question
 					for attribute in moms_dictionary[my_mom].__dict__:
@@ -170,17 +215,17 @@ def add_maternal_effects(offspring_list, moms_dictionary, offspring_with_mom_eff
 							#print("The original trait value is: " + str(pokemon.__dict__[trait]))
 							# If the offspring trait is equal to the mom's attribute, it assigns the value of the attribute to "mom's influence"
 							moms_influence = moms_dictionary[my_mom].__dict__[attribute]
-							print("Mom's influence on ", trait, moms_influence)
+							#print("Mom's influence on ", trait, moms_influence)
 							#print("Mom's influence (proportion): " + str(moms_influence))
 							
 							# Multiplies mom's influence by the genetic trait value to get a fraction of the original value
 							mom_effect = moms_influence*genetic_trait_value
-							print("Mom's effect: ", mom_effect)
+							#print("Mom's effect: ", mom_effect)
 							#print("Mom's actual effect: " + str(mom_effect))
 							
 							# Gives the total after mom's addition
 							new_total = mom_effect + genetic_trait_value
-							print("New total value: ", new_total)
+							#print("New total value: ", new_total)
 							#print("The new trait value: " + str(new_total))
 							
 							# Replaces the old trait value with the new total for the pokemon (offspring)
@@ -191,7 +236,7 @@ def add_maternal_effects(offspring_list, moms_dictionary, offspring_with_mom_eff
 							offspring_with_mom_effects_list.append(pokemon)
 
 
-def add_environmental_effects(offspring_list, environment_dictionary, offspring_with_environmental_effects_list):
+def add_environmental_effects(offspring_list, moms_dictionary, offspring_with_env_effects_list):
 # Changes each trait in each individual Charizard based on the environment in which it was reared; this is confusing, so I'll break it down comment-by-comment
 # IMPORTANT NOTE: With respect to this game, maternal effects are added first, so this function should accept POST-maternal-effect offspring trait values (and not strictly genetic-effect trait values)
 	for pokemon in offspring_list:
@@ -202,9 +247,10 @@ def add_environmental_effects(offspring_list, environment_dictionary, offspring_
 			# Checks to see if the trait is in the "continuous traits" list
 			if trait in pokemon.continuous_traits:
 
-				# Sets the genetic trait value equal to the ORIGINAL trait value (what it was BEFORE mom or other influences)
+				# Sets the genetic trait value equal to the ORIGINAL trait value (what it was BEFORE environmental influences)
 				gen_and_mom_trait_value = pokemon.__dict__[trait]
-				print(trait, genetic_trait_value)
+				print("")
+				print("Starting at", trait, gen_and_mom_trait_value)
 
 
 ### NOTE: ALL CODE ABOVE APPLIES TO BOTH MATERNAL AND ENVIRONMENTAL EFFECTS, BUT THE CODE BELOW IS SPECIFIC TO ENVIRONMENTAL EFFECTS--BE SURE TO CHANGE IT ###
@@ -213,35 +259,40 @@ def add_environmental_effects(offspring_list, environment_dictionary, offspring_
 				if pokemon.mom_identity in moms_dictionary.keys():
 
 					# Creates a short-hand for ease of use--just reducing characters
-					my_mom = pokemon.mom_identity
-					print(pokemon.mom_identity)
+					my_mom = moms_dictionary[pokemon.mom_identity]
+					print(my_mom.env.name)
 
 					# Looks at each character that mom possesses to check and see whether it's equal to the trait (+ "impact"--the attribute mom possesses will be "trait_impact") in question
-					for attribute in moms_dictionary[my_mom].__dict__:
+					for attribute in my_mom.env.__dict__:
+						#print(attribute)
 						if attribute == (trait + "_impact"):
-
+							#print(attribute)
 							#print("The original trait value is: " + str(pokemon.__dict__[trait]))
 							# If the offspring trait is equal to the mom's attribute, it assigns the value of the attribute to "mom's influence"
-							moms_influence = moms_dictionary[my_mom].__dict__[attribute]
-							print("Mom's influence: ", moms_influence)
-							#print("Mom's influence (proportion): " + str(moms_influence))
+							attribute_range = str(attribute) + "_range"
+							attribute_range = my_mom.env.__dict__[attribute_range]
+							attribute = random.uniform(attribute_range[0], attribute_range[1])
+
+							env_influence = attribute
+							
+							print("Env's influence (proportion): " + str(env_influence))
 							
 							# Multiplies mom's influence by the genetic trait value to get a fraction of the original value
-							mom_effect = moms_influence*genetic_trait_value
-							print("Mom's effect: ", mom_effect)
-							#print("Mom's actual effect: " + str(mom_effect))
+							env_effect = env_influence*gen_and_mom_trait_value
+							#print("Mom's effect: ", mom_effect)
+							print("Env's actual effect: " + str(env_effect))
 							
 							# Gives the total after mom's addition
-							new_total = mom_effect + genetic_trait_value
-							print("New total value: ", new_total)
-							#print("The new trait value: " + str(new_total))
+							new_total = env_effect + gen_and_mom_trait_value
+							#print("New total value: ", new_total)
+							print("The new trait value: " + str(new_total))
 							
 							# Replaces the old trait value with the new total for the pokemon (offspring)
 							pokemon.__dict__[trait] = new_total
 							#print("All this pokemon's traits: ")
 							#for trait in pokemon.__dict__:
 							#	print(trait, pokemon.__dict__[trait])
-							offspring_with_mom_effects_list.append(pokemon)
+							offspring_with_env_effects_list.append(pokemon)
 
 
 

@@ -13,12 +13,20 @@ class popHolder(object):
 		pass
 
 class Environment(object):
+	env_names = [
+		"desert",
+		"forest",
+		"prairie",
+		"wetland",
+		"mountains"
+		]
+
 	def __init__(self, name = "default environment", defense_impact = 0, fecundity_impact = 0, adult_weight_impact = 1, color_intensity_impact = 1, tail_flame_height_impact = 1, moves_known_impact = 1, description = "default description"):
 		self.name = name
-		self.adult_weight_impact = weight_impact
+		self.adult_weight_impact = adult_weight_impact
 		self.adult_weight_impact_range = [-1,1]
 
-		self.color_intensity_impact = color_impact
+		self.color_intensity_impact = color_intensity_impact
 		self.color_intensity_impact_range = [-1,1]
 
 		self.tail_flame_height_impact = tail_flame_height_impact
@@ -31,12 +39,14 @@ class Environment(object):
 		self.fecundity_impact_range = [-1,1]
 
 		self.defense_impact = defense_impact
-		self.defense_impact_range = defense_impact_range
+		self.defense_impact_range = [-1,1]
 
 		self.predator_attack_impact = 0
 		self.predator_attack_impact_range = [-1,1]
 
 		self.description = description
+
+		
 
 
 
@@ -61,15 +71,20 @@ class Charizard(object):
 		self.moves_known = moves_known
 		self.moves_known_range = [1,10]
 
+		# Tells us how capable the charizard is of defending itself or escaping from danger
+		self.defense = defense
+		self.defense_range = [1,10]
+
 		# Tells us who this charizard's mother is
 		self.mom_identity = ""
 
-		self.defense = defense
-		self.defense_range = [1,10]
+		# Tells us the environment that this charizard was born in (for determining the effects of environment on your birthplace)
+		self.env_born = ""
 
 		# Describes the environment in which this Charizard was raised
 		self.raised_environment = ""
 
+		# Describes the charizard's reproductive potential--how many offspring will it produce?
 		self.fecundity = fecundity
 		self.fecundity_range = [1,100]
 
@@ -78,8 +93,14 @@ class Charizard(object):
 
 		# Keeps track of which Charizard is which numerically (simpler than names for use in organizing them later)
 		self.index = ""
+
+		# Gives the species (for later incarnations of the game when other organisms may be available)
 		self.species = "Charizard"
+		
+		# Changes to "True" when the charizard has been eaten by a predator--should add it to a list of the dead from that generation
 		self.dead = False
+
+		# Gives the charizard's sex--"0" is female, "1" is male
 		self.sex = 0
 
 		self.continuous_traits = [
@@ -96,6 +117,9 @@ class Momizard(Charizard):
 	def __init__(self, offspring = "default offspring", defense_impact = 0, fecundity_impact = 0, name = "default name", adult_weight_impact = 1, color_intensity_impact = 1, tail_flame_height_impact = 1, moves_known_impact = 1):
 		super().__init__()
 		self.name = name
+
+		# The environment in which this mother gave birth--all her offspring will share this environment
+		self.env = ""
 
 		# Note: You can use the "range"s below to change the proportion of the effect mom has (e.g. an effect of -0.5 would cut the existing trait value in half)
 		self.adult_weight_impact = adult_weight_impact

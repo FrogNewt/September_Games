@@ -1386,7 +1386,8 @@ class MyGame(arcade.Window):
                 if new_check == True:
                     self.horse_bet_on = i.scale
                     arcade.play_sound(select)
-                    self.current_state = "FOCUS_SELECTED"
+                    
+                    self.start_game = True
         
         if self.current_state == "SPECIES_SELECTION":
             
@@ -1551,7 +1552,7 @@ class MyGame(arcade.Window):
 
             self.hist_fading_in = True
 
-            if self.hist_fading_in == True:
+            if self.hist_fading_in == True and (self.level_complete == True):
                 for i in self.hist_list:
                     if (i.alpha < 255) and (i.faded_in == False):
                         i.alpha += 5
@@ -2352,6 +2353,7 @@ class MyGame(arcade.Window):
 
 
         if self.start_game == True:
+            print("Ready for that game!")
             self.current_state = "GAME"
             self.setup()
 
@@ -2363,6 +2365,9 @@ class MyGame(arcade.Window):
         if self.current_state == "SELECT_FOCUS":
             for i in self.hist_list:
                 i.center_x -= 140
+                i.fading_in = True
+                i.fading_out = False
+                #i.faded_in = False
                 
                 i.draw()
 

@@ -1,0 +1,302 @@
+Mean genotype:  0.012602178975144195
+Mean phenotype:  5.012602178975143
+
+################### BEGIN ANCESTORS ###################
+
+There are 10000 ancestral Newts!
+The ancestral genetic mean in Newts for tails is 0.012602178975144195 and the additive genetic variance is 4.988804084185054!
+
+The ancestral phenotypic mean in Newts for tails is 5.012602178975143 and the phenotypic variance is 4.988804084185054!
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  -1.1998052392017424
+Test phenotypic mean (after murders):  3.8001947607982576
+Predator value was 6 this generation!
+It looks like 3296 of the 10000 Newts were killed by the Frogs this time!
+
+############## ANCESTORS DONE ###############
+
+
+######### GENERATION 1 BEFORE SELECTION (BELOW) #########
+
+Genetic mean:  -1.1799967999286627
+VA: 3.659659214280713
+
+Phenotypic mean:  3.8727855235448803
+VP: 7.037696468119474
+The population genetic mean in Newts for tails is -1.1799967999286627 and the additive genetic variance is 3.659659214280713!
+
+The population phenotypic mean in Newts for tails is 3.8727855235448803 and the phenotypic variance is 7.037696468119474!
+The heritability of this trait is 0.5200081064676269.
+
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  -1.6065798721072564
+Test phenotypic mean (after murders):  2.8811633229024287
+Predator value was 6 this generation!
+It looks like 1254 of the 6738 Newts were killed by the Frogs this time!
+
+############## RESPONSE TO SELECTION IN GENERATION 1 #############
+
+Previous genetic mean:  0.012602178975144195
+Current genetic mean:  -1.1799967999286627
+
+Response to selection:  -0.620161136794994
+None
+
+######### GENERATION 2 BEFORE SELECTION (BELOW) #########
+
+Genetic mean:  -1.6127152088704793
+VA: 3.3291228624714044
+
+Phenotypic mean:  2.235907098499634
+VP: 4.81549698465117
+The population genetic mean in Newts for tails is -1.6127152088704793 and the additive genetic variance is 3.3291228624714044!
+
+The population phenotypic mean in Newts for tails is 2.235907098499634 and the phenotypic variance is 4.81549698465117!
+The heritability of this trait is 0.6913352605312789.
+
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  -1.7853656209334492
+Test phenotypic mean (after murders):  1.8911824396118202
+Predator value was 6 this generation!
+It looks like 325 of the 5484 Newts were killed by the Frogs this time!
+
+############## RESPONSE TO SELECTION IN GENERATION 2 #############
+
+Previous genetic mean:  -1.1799967999286627
+Current genetic mean:  -1.6127152088704793
+
+Response to selection:  -0.29915349398247126
+None
+
+######### GENERATION 3 BEFORE SELECTION (BELOW) #########
+
+Genetic mean:  -0.5399990793418947
+VA: 3.0807477720502
+
+Phenotypic mean:  1.6970193178827484
+VP: 4.213744967488719
+The population genetic mean in Newts for tails is -0.5399990793418947 and the additive genetic variance is 3.0807477720502!
+
+The population phenotypic mean in Newts for tails is 1.6970193178827484 and the phenotypic variance is 4.213744967488719!
+The heritability of this trait is 0.7311187069506593.
+
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  -0.641573761480788
+Test phenotypic mean (after murders):  1.498180976766946
+Predator value was 6 this generation!
+It looks like 159 of the 5040 Newts were killed by the Frogs this time!
+
+############## RESPONSE TO SELECTION IN GENERATION 3 #############
+
+Previous genetic mean:  -1.6127152088704793
+Current genetic mean:  -0.5399990793418947
+
+Response to selection:  0.7842828295460547
+None
+
+######### GENERATION 4 BEFORE SELECTION (BELOW) #########
+
+Genetic mean:  0.9605746686838335
+VA: 3.0418624932650684
+
+Phenotypic mean:  2.655818872498205
+VP: 4.81103929282049
+The population genetic mean in Newts for tails is 0.9605746686838335 and the additive genetic variance is 3.0418624932650684!
+
+The population phenotypic mean in Newts for tails is 2.655818872498205 and the phenotypic variance is 4.81103929282049!
+The heritability of this trait is 0.6322672312829449.
+
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  0.7625398598530696
+Test phenotypic mean (after murders):  2.230549993753393
+Predator value was 6 this generation!
+It looks like 397 of the 5050 Newts were killed by the Frogs this time!
+
+############## RESPONSE TO SELECTION IN GENERATION 4 #############
+
+Previous genetic mean:  -0.5399990793418947
+Current genetic mean:  0.9605746686838335
+
+Response to selection:  0.9487636090000986
+None
+
+######### GENERATION 5 BEFORE SELECTION (BELOW) #########
+
+Genetic mean:  1.3126788098738364
+VA: 2.8394489700577776
+
+Phenotypic mean:  3.9636589283934547
+VP: 6.1474924289668635
+The population genetic mean in Newts for tails is 1.3126788098738364 and the additive genetic variance is 2.8394489700577776!
+
+The population phenotypic mean in Newts for tails is 3.9636589283934547 and the phenotypic variance is 6.1474924289668635!
+The heritability of this trait is 0.4618873472179241.
+
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  0.9630873435260331
+Test phenotypic mean (after murders):  3.0553342195083326
+Predator value was 6 this generation!
+It looks like 820 of the 4528 Newts were killed by the Frogs this time!
+
+############## RESPONSE TO SELECTION IN GENERATION 5 #############
+
+Previous genetic mean:  0.9605746686838335
+Current genetic mean:  1.3126788098738364
+
+Response to selection:  0.1626324477186959
+None
+
+######### GENERATION 6 BEFORE SELECTION (BELOW) #########
+
+Genetic mean:  -0.01269019006579489
+VA: 2.7101777075050646
+
+Phenotypic mean:  3.9804733431559973
+VP: 6.063054665436227
+The population genetic mean in Newts for tails is -0.01269019006579489 and the additive genetic variance is 2.7101777075050646!
+
+The population phenotypic mean in Newts for tails is 3.9804733431559973 and the phenotypic variance is 6.063054665436227!
+The heritability of this trait is 0.4469987254040487.
+
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  -0.3793804566878659
+Test phenotypic mean (after murders):  3.0445902551822037
+Predator value was 6 this generation!
+It looks like 725 of the 3844 Newts were killed by the Frogs this time!
+
+############## RESPONSE TO SELECTION IN GENERATION 6 #############
+
+Previous genetic mean:  1.3126788098738364
+Current genetic mean:  -0.01269019006579489
+
+Response to selection:  -0.592438253663054
+None
+
+######### GENERATION 7 BEFORE SELECTION (BELOW) #########
+
+Genetic mean:  -1.7047323552544353
+VA: 2.467480391336327
+
+Phenotypic mean:  2.2820898521169695
+VP: 3.8424924368359825
+The population genetic mean in Newts for tails is -1.7047323552544353 and the additive genetic variance is 2.467480391336327!
+
+The population phenotypic mean in Newts for tails is 2.2820898521169695 and the phenotypic variance is 3.8424924368359825!
+The heritability of this trait is 0.6421562129002186.
+
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  -1.8367727292784284
+Test phenotypic mean (after murders):  1.998055645579326
+Predator value was 6 this generation!
+It looks like 151 of the 2976 Newts were killed by the Frogs this time!
+
+############## RESPONSE TO SELECTION IN GENERATION 7 #############
+
+Previous genetic mean:  -0.01269019006579489
+Current genetic mean:  -1.7047323552544353
+
+Response to selection:  -1.0865553888650235
+None
+
+######### GENERATION 8 BEFORE SELECTION (BELOW) #########
+
+Genetic mean:  -1.775030248838507
+VA: 2.3085200528752727
+
+Phenotypic mean:  0.5164338661759414
+VP: 2.7656553014559746
+The population genetic mean in Newts for tails is -1.775030248838507 and the additive genetic variance is 2.3085200528752727!
+
+The population phenotypic mean in Newts for tails is 0.5164338661759414 and the phenotypic variance is 2.7656553014559746!
+The heritability of this trait is 0.8347099696986664.
+
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  -1.7901736683086433
+Test phenotypic mean (after murders):  0.4914030851411893
+Predator value was 6 this generation!
+It looks like 11 of the 2882 Newts were killed by the Frogs this time!
+
+############## RESPONSE TO SELECTION IN GENERATION 8 #############
+
+Previous genetic mean:  -1.7047323552544353
+Current genetic mean:  -1.775030248838507
+
+Response to selection:  -0.058678352623440545
+None
+
+######### GENERATION 9 BEFORE SELECTION (BELOW) #########
+
+Genetic mean:  -0.061818187168301175
+VA: 2.1302037185121665
+
+Phenotypic mean:  0.4581732832976793
+VP: 2.5360780625893065
+The population genetic mean in Newts for tails is -0.061818187168301175 and the additive genetic variance is 2.1302037185121665!
+
+The population phenotypic mean in Newts for tails is 0.4581732832976793 and the phenotypic variance is 2.5360780625893065!
+The heritability of this trait is 0.8399598379622641.
+
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  -0.07331980010633558
+Test phenotypic mean (after murders):  0.4369880413411691
+Predator value was 6 this generation!
+It looks like 10 of the 2820 Newts were killed by the Frogs this time!
+
+############## RESPONSE TO SELECTION IN GENERATION 9 #############
+
+Previous genetic mean:  -1.775030248838507
+Current genetic mean:  -0.061818187168301175
+
+Response to selection:  1.4390293257155025
+None
+
+######### GENERATION 10 BEFORE SELECTION (BELOW) #########
+
+Genetic mean:  1.6932160004911585
+VA: 2.049759844540961
+
+Phenotypic mean:  2.155984849588332
+VP: 3.110323828835737
+The population genetic mean in Newts for tails is 1.6932160004911585 and the additive genetic variance is 2.049759844540961!
+
+The population phenotypic mean in Newts for tails is 2.155984849588332 and the phenotypic variance is 3.110323828835737!
+The heritability of this trait is 0.6590181464507608.
+
+
+These guys are going on to reproduce:
+Test genetic mean (after murders):  1.6205380980090827
+Test phenotypic mean (after murders):  1.995998985398977
+Predator value was 6 this generation!
+It looks like 88 of the 2842 Newts were killed by the Frogs this time!
+
+############## RESPONSE TO SELECTION IN GENERATION 10 #############
+
+Previous genetic mean:  -0.061818187168301175
+Current genetic mean:  1.6932160004911585
+
+Response to selection:  1.156599377309054
+None
+
+Gen Pop Size Phenotypic Means Genetic Means Predator Value   VA     VP    H^2 
+--- -------- ---------------- ------------- -------------- ------ ------ -----
+  1    10000           5.0126        0.0126              6 4.9888 4.9888     1
+  2     6738           3.8727        -1.179              6 3.6596 3.6596 0.520
+  3     5484           2.2359        -1.612              6 3.3291 3.3291 0.691
+  4     5040           1.6970        -0.539              6 3.0807 3.0807 0.731
+  5     5050           2.6558        0.9605              6 3.0418 3.0418 0.632
+  6     4528           3.9636        1.3126              6 2.8394 2.8394 0.461
+  7     3844           3.9804        -0.012              6 2.7101 2.7101 0.446
+  8     2976           2.2820        -1.704              6 2.4674 2.4674 0.642
+  9     2882           0.5164        -1.775              6 2.3085 2.3085 0.834
+ 10     2820           0.4581        -0.061              6 2.1302 2.1302 0.839
+ 11     2842           2.1559        1.6932              6 2.0497 2.0497 0.659

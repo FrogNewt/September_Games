@@ -325,7 +325,7 @@ class MyGame(arcade.Window):
 
         self.update_scaling(self.starter_string)
 
-        
+        self.scaling_updated = False
 
 
         self.pokemon_medley = "sounds/pokemon_medley.wav"
@@ -547,29 +547,22 @@ class MyGame(arcade.Window):
 
 
         #### EXPERIMENTAL: TRYING TO CREATE TEN DIFFERENT VARIANTS ACROSS A GRADIENT ####
-        self.organism_var1_sprite = arcade.Sprite(self.starter_organism)
-        self.organism_var2_sprite = arcade.Sprite(self.starter_organism)
-        self.organism_var3_sprite = arcade.Sprite(self.starter_organism)
-        self.organism_var4_sprite = arcade.Sprite(self.starter_organism)
-        self.organism_var5_sprite = arcade.Sprite(self.starter_organism)
-        self.organism_var6_sprite = arcade.Sprite(self.starter_organism)
-        self.organism_var7_sprite = arcade.Sprite(self.starter_organism)
-        self.organism_var8_sprite = arcade.Sprite(self.starter_organism)
-        self.organism_var9_sprite = arcade.Sprite(self.starter_organism)
-        self.organism_var10_sprite = arcade.Sprite(self.starter_organism)
-
+        
         self.experimental_list = arcade.SpriteList()
+        self.define_all_ten_sprites_images()
 
-        self.experimental_list.append(self.organism_var1_sprite)
-        self.experimental_list.append(self.organism_var2_sprite)
-        self.experimental_list.append(self.organism_var3_sprite)
-        self.experimental_list.append(self.organism_var4_sprite)
-        self.experimental_list.append(self.organism_var5_sprite)
-        self.experimental_list.append(self.organism_var6_sprite)
-        self.experimental_list.append(self.organism_var7_sprite)
-        self.experimental_list.append(self.organism_var8_sprite)
-        self.experimental_list.append(self.organism_var9_sprite)
-        self.experimental_list.append(self.organism_var10_sprite)
+        
+
+        #self.experimental_list.append(self.organism_var1_sprite)
+        #self.experimental_list.append(self.organism_var2_sprite)
+        #self.experimental_list.append(self.organism_var3_sprite)
+        #self.experimental_list.append(self.organism_var4_sprite)
+        #self.experimental_list.append(self.organism_var5_sprite)
+        #self.experimental_list.append(self.organism_var6_sprite)
+        #self.experimental_list.append(self.organism_var7_sprite)
+        #self.experimental_list.append(self.organism_var8_sprite)
+        #self.experimental_list.append(self.organism_var9_sprite)
+        #self.experimental_list.append(self.organism_var10_sprite)
 
 
         # Set up the player, specifically placing it at these coordinates (to begin the game)
@@ -578,11 +571,12 @@ class MyGame(arcade.Window):
         self.organism_high_var_sprite = arcade.Sprite(self.starter_organism, self.CHARACTER_SCALING_HIGH_VAR)
         
 
-        self.focal_organism_list.append(self.organism_mean_sprite)
-        self.focal_organism_list.append(self.organism_low_var_sprite)
-        self.focal_organism_list.append(self.organism_high_var_sprite)
+        #self.focal_organism_list.append(self.organism_mean_sprite)
+        #self.focal_organism_list.append(self.organism_low_var_sprite)
+        #self.focal_organism_list.append(self.organism_high_var_sprite)
 
-        self.focal_organism = self.focal_organism_list[self.focus_counter]
+
+        #self.focal_organism = self.focal_organism_list[self.focal_organism_list.index(self.organism_var5_sprite)]
 
         # Sets up textures for right and left facing sprites that can be modified
         # For mean organism
@@ -598,6 +592,7 @@ class MyGame(arcade.Window):
         self.organism_low_var_sprite.current_left = TEXTURE_LEFT
 
         # Starts the invincibility clock for each organism
+
         self.organism_low_var_sprite.invincibility_timer = 0
         self.organism_mean_sprite.invincibility_timer = 0
         self.organism_high_var_sprite.invincibility_timer = 0
@@ -625,9 +620,9 @@ class MyGame(arcade.Window):
         self.organism_high_var_sprite.alpha = 50
         self.organism_high_var_sprite.deaths = 0
 
-        self.player_list.append(self.organism_mean_sprite)
-        self.player_list.append(self.organism_low_var_sprite)
-        self.player_list.append(self.organism_high_var_sprite)
+        #self.player_list.append(self.organism_mean_sprite)
+        #self.player_list.append(self.organism_low_var_sprite)
+        #self.player_list.append(self.organism_high_var_sprite)
 
 
         
@@ -833,6 +828,10 @@ class MyGame(arcade.Window):
         self.physics_engine_low_var = arcade.PhysicsEnginePlatformer(self.organism_low_var_sprite, self.wall_list, GRAVITY)
         self.physics_engine_high_var = arcade.PhysicsEnginePlatformer(self.organism_high_var_sprite, self.wall_list, GRAVITY)
 
+
+        for i in self.experimental_list:
+            i.physics_engine = arcade.PhysicsEnginePlatformer(i, self.wall_list ,GRAVITY)
+
         self.physics_engine_enemy = arcade.PhysicsEnginePlatformer(self.enemy, self.enemy_wall_list, GRAVITY)
         self.enemy_physics_engine_list.append(self.physics_engine_enemy)
         self.physics_engine_darwin = arcade.PhysicsEnginePlatformer(self.darwin_sprite, self.wall_list, GRAVITY)
@@ -852,6 +851,12 @@ class MyGame(arcade.Window):
         self.any_player_sprite = self.organism_mean_sprite or self.organism_low_var_sprite or self.organism_high_var_sprite
         #self.physics_engine = arcade.PhysicsEnginePlatformer(self.organism_low_var_sprite, self.wall_list, GRAVITY)
         #self.physics_engine = arcade.PhysicsEnginePlatformer(self.organism_high_var_sprite, self.wall_list, GRAVITY)
+
+
+    def define_focal_organism_list(self):
+        for i in self.experimental_list:
+            self.focal_organism_list.append(i)
+
 
 
     def redefine_hist_sprites(self):
@@ -919,62 +924,103 @@ class MyGame(arcade.Window):
         self.hist_list.append(self.hist_sprite_9)
         self.hist_list.append(self.hist_sprite_10)
 
+    def define_all_ten_sprites_images(self):
+
+
+
+        self.organism_var1_sprite = arcade.Sprite(self.starter_organism)
+        self.organism_var2_sprite = arcade.Sprite(self.starter_organism)
+        self.organism_var3_sprite = arcade.Sprite(self.starter_organism)
+        self.organism_var4_sprite = arcade.Sprite(self.starter_organism)
+        self.organism_var5_sprite = arcade.Sprite(self.starter_organism)
+        self.organism_var6_sprite = arcade.Sprite(self.starter_organism)
+        self.organism_var7_sprite = arcade.Sprite(self.starter_organism)
+        self.organism_var8_sprite = arcade.Sprite(self.starter_organism)
+        self.organism_var9_sprite = arcade.Sprite(self.starter_organism)
+        self.organism_var10_sprite = arcade.Sprite(self.starter_organism)
+
+
+
+        self.experimental_list.append(self.organism_var1_sprite)
+        self.experimental_list.append(self.organism_var2_sprite)
+        self.experimental_list.append(self.organism_var3_sprite)
+        self.experimental_list.append(self.organism_var4_sprite)
+        self.experimental_list.append(self.organism_var5_sprite)
+        self.experimental_list.append(self.organism_var6_sprite)
+        self.experimental_list.append(self.organism_var7_sprite)
+        self.experimental_list.append(self.organism_var8_sprite)
+        self.experimental_list.append(self.organism_var9_sprite)
+        self.experimental_list.append(self.organism_var10_sprite)
+
+        for i in self.experimental_list:
+            i.invincibility_timer = 0
+            if self.starter_string == "bulbasaur":
+                texture = arcade.load_texture("images/bulbasaur_left.png")
+                i.textures.append(texture)
+                texture = arcade.load_texture("images/bulbasaur_right.png")
+                i.textures.append(texture)
+
+            i.invincible = False
+            i.alpha = 50
+            i.physics_engine = ""
+            i.dead = False
+
     def update_scaling(self, starter_string):
         if "bulbasaur" == starter_string:
             if self.level == 1:
                 self.CHARACTER_SCALING = bulbasaur_scaling * starting_mean
                 print("Bulbasaur updated!")
-                self.var = self.var * bulbasaur_scaling
+                self.var = self.var * bulbasaur_scaling * 0.01
                 print("New variance:", self.var)
                 self.std_dev = numpy.sqrt(self.var)
-                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.var * 0.005)
+                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.std_dev/2)
                 # A demo for the "1-10" mode: this will be two standard deviations smaller than the mean
-                self.CHARACTER_SCALING_VAR_1 = self.CHARACTER_SCALING - (self.std_dev*2)
-                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.var * 0.005)
+                #self.CHARACTER_SCALING_VAR_1 = self.CHARACTER_SCALING - (self.std_dev*2)
+                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.std_dev/2)
                 #print("Scaled to bulbasaur")
             elif self.level > 1:
                 self.CHARACTER_SCALING = bulbasaur_scaling * self.CHARACTER_SCALING
                 print("Bulbasaur updated!")
-                self.var = self.var * bulbasaur_scaling
+                self.var = self.var * bulbasaur_scaling * 0.01
                 self.std_dev = numpy.sqrt(self.var)
-                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.var * 0.005)
-                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.var * 0.005)
+                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.std_dev/2)
+                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.std_dev/2)
 
 
         elif "charmander" == starter_string:
             if self.level == 1:
                 self.CHARACTER_SCALING = charmander_scaling * starting_mean
                 print("charmander updated!")
-                self.var = self.var * charmander_scaling
+                self.var = self.var * charmander_scaling * 0.01
                 self.std_dev = numpy.sqrt(self.var)
-                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.var * 0.005)
-                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.var * 0.005)
+                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.std_dev/2)
+                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.std_dev/2)
                 
                 #print("Scaled to charmander")
             elif self.level > 1:
                 self.CHARACTER_SCALING = charmander_scaling * self.CHARACTER_SCALING
                 print("charmander updated!")
-                self.var = self.var * charmander_scaling
+                self.var = self.var * charmander_scaling * 0.01
                 self.std_dev = numpy.sqrt(self.var)
-                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.var * 0.005)
-                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.var * 0.005)
+                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.std_dev/2)
+                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.std_dev/2)
 
         elif "squirtle" == starter_string:
             if self.level == 1:
                 self.CHARACTER_SCALING = squirtle_scaling * starting_mean
                 print("squirtle updated!")
-                self.var = self.var * squirtle_scaling
+                self.var = self.var * squirtle_scaling * 0.01
                 self.std_dev = numpy.sqrt(self.var)
-                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.var * 0.007)
-                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.var * 0.007)
+                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.std_dev/2)
+                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.std_dev/2)
                 #print("Scaled to squirtle")
             elif self.level > 1:
                 self.CHARACTER_SCALING = squirtle_scaling * self.CHARACTER_SCALING
                 print("squirtle updated!")
-                self.var = self.var * squirtle_scaling
+                self.var = self.var * squirtle_scaling * 0.01
                 self.std_dev = numpy.sqrt(self.var)
-                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.var * 0.007)
-                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.var * 0.007)
+                self.CHARACTER_SCALING_LOW_VAR = self.CHARACTER_SCALING - (self.std_dev/2)
+                self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + (self.std_dev/2)
         
         else:
             self.CHARACTER_SCALING = 0.2 * starting_mean
@@ -982,19 +1028,45 @@ class MyGame(arcade.Window):
             self.CHARACTER_SCALING_HIGH_VAR = self.CHARACTER_SCALING + pop_keeper.additive_genetic_variance_list[self.level-1]
             print("NO INDICATION!")
 
+        if self.var <= 0:
+            self.var = 0.00000001
+        if self.std_dev <= 0:
+            self.var = 0.000000001
+
+
     def scale_everyone(self):
+
         self.organism_var1_sprite.scale = self.CHARACTER_SCALING - (self.std_dev*2)
-        print(self.organism_var1_sprite.scale)
+        
+        
         self.organism_var2_sprite.scale = self.CHARACTER_SCALING - (self.std_dev*1.5)
-        print(self.organism_var1_sprite.scale)
+        
+        
         self.organism_var3_sprite.scale = self.CHARACTER_SCALING - (self.std_dev)
+        
         self.organism_var4_sprite.scale = self.CHARACTER_SCALING - (self.std_dev*0.5)
+        
         self.organism_var5_sprite.scale = self.CHARACTER_SCALING - (self.std_dev*0.25)
+        
         self.organism_var6_sprite.scale = self.CHARACTER_SCALING + (self.std_dev*0.25)
+        
         self.organism_var7_sprite.scale = self.CHARACTER_SCALING + (self.std_dev*0.5)
+        
         self.organism_var8_sprite.scale = self.CHARACTER_SCALING + (self.std_dev*1)
+        
         self.organism_var9_sprite.scale = self.CHARACTER_SCALING + (self.std_dev*1.5)
-        self.organism_var1_sprite.scale = self.CHARACTER_SCALING + (self.std_dev*2)
+        
+        self.organism_var10_sprite.scale = self.CHARACTER_SCALING + (self.std_dev*2)
+
+        for org in self.experimental_list:
+            for texture in org.textures:
+                texture.scale = org.scale
+        
+
+        for i in range(len(self.experimental_list)-1):
+            if self.experimental_list[i].scale <= 0:
+                self.experimental_list[i].scale = 0.000000001
+            print("Scale for var ", i+1,":", self.experimental_list[i].scale)
 
     def make_enemy(self, interval):
             enemy = arcade.Sprite("images/red_gyarados_right.png", ENEMY_SCALING)
@@ -1381,10 +1453,10 @@ class MyGame(arcade.Window):
 
         if self.current_state == "SELECT_FOCUS":
 
-            for i in self.hist_list:
-                new_check = i.collides_with_point((x, y))
+            for i in range(len(self.experimental_list)-1):
+                new_check = self.experimental_list[i].collides_with_point((x, y))
                 if new_check == True:
-                    self.horse_bet_on = i.scale
+                    self.horse_bet_on = i
                     arcade.play_sound(select)
                     
                     self.start_game = True
@@ -1476,8 +1548,45 @@ class MyGame(arcade.Window):
         self.hist_coords_given = True
 
 
+    def give_hist_coordinates_new(self, current_viewport):
+        low_var_base_x = current_viewport[0] + 200
+
+        self.organism_var1_sprite.center_y = self.hist_floor - 5
+        self.organism_var1_sprite.center_x = low_var_base_x
+
+        self.organism_var2_sprite.center_y = self.hist_floor - 5
+        self.organism_var2_sprite.center_x = self.organism_var1_sprite.center_x + 85
+
+        self.organism_var3_sprite.center_y = self.organism_var2_sprite.center_y + 50
+        self.organism_var3_sprite.center_x = self.organism_var2_sprite.center_x
+
+        self.organism_var4_sprite.center_y = self.hist_floor
+        self.organism_var4_sprite.center_x = self.organism_var3_sprite.center_x + 85
+
+        self.organism_var5_sprite.center_y = self.organism_var4_sprite.center_y + 60
+        self.organism_var5_sprite.center_x = self.organism_var4_sprite.center_x
+
+        self.organism_var6_sprite.center_y = self.organism_var5_sprite.center_y + 60
+        self.organism_var6_sprite.center_x = self.organism_var5_sprite.center_x
+
+        self.organism_var7_sprite.center_y = self.organism_var6_sprite.center_y + 60
+        self.organism_var7_sprite.center_x = self.organism_var6_sprite.center_x
+
+        self.organism_var8_sprite.center_y = self.hist_floor + 5
+        self.organism_var8_sprite.center_x = self.organism_var7_sprite.center_x + 85
+ 
+        self.organism_var9_sprite.center_y = self.organism_var8_sprite.center_y + 70
+        self.organism_var9_sprite.center_x = self.organism_var8_sprite.center_x
+
+        self.organism_var10_sprite.center_y = self.hist_floor + 5
+        self.organism_var10_sprite.center_x = self.organism_var9_sprite.center_x + 85
+
+        self.hist_coords_given = True
+
+
     def draw_game(self):
         # NOTE: THIS IS WORKING TO PRODUCE EXTINCTION IN THE MIDDLE OF THE SCREEN!
+
 
         arcade.start_render()
         if self.current_music != self.game_music and self.level_complete == False:
@@ -1772,41 +1881,55 @@ class MyGame(arcade.Window):
 
         if (self.level_complete == False) and (self.extinction == False):
             if key == arcade.key.UP or key == arcade.key.W:
+                for org in self.player_list:
+                    if org.physics_engine.can_jump():
+                        org.change_y = int(ORGANISM_MEAN_JUMP_SPEED)
                 ### UNCOMMENT LINES BELOW FOR JUMPING ABILITY/SOUND IN SIDE-TO-SIDE PLATFORMER ###
                 #if self.physics_engine.can_jump():
                 #self.organism_mean_sprite.change_y = ORGANISM_MEAN_JUMP_SPEED
 
-                if self.physics_engine_mean.can_jump():
-                    self.organism_mean_sprite.change_y = int(ORGANISM_MEAN_JUMP_SPEED)
+                #if self.physics_engine_mean.can_jump():
+                #    self.organism_mean_sprite.change_y = int(ORGANISM_MEAN_JUMP_SPEED)
                 
-                if self.physics_engine_low_var.can_jump():
-                    self.organism_low_var_sprite.change_y = int(ORGANISM_LOW_VAR_JUMP_SPEED)
+                #if self.physics_engine_low_var.can_jump():
+                #    self.organism_low_var_sprite.change_y = int(ORGANISM_LOW_VAR_JUMP_SPEED)
                 
-                if self.physics_engine_high_var.can_jump():
-                    self.organism_high_var_sprite.change_y = int(ORGANISM_HIGH_VAR_JUMP_SPEED)
+                #if self.physics_engine_high_var.can_jump():
+                #    self.organism_high_var_sprite.change_y = int(ORGANISM_HIGH_VAR_JUMP_SPEED)
 
                 #arcade.play_sound(self.jump_sound)
             if key == arcade.key.DOWN or key == arcade.key.S:
-                self.organism_mean_sprite.change_y = -int(ORGANISM_MEAN_MOVEMENT_SPEED)
-                self.organism_low_var_sprite.change_y = -int(ORGANISM_LOW_VAR_MOVEMENT_SPEED)
-                self.organism_high_var_sprite.change_y = -int(ORGANISM_HIGH_VAR_MOVEMENT_SPEED)
+
+                for org in self.player_list:
+                    org.change_y = -int(ORGANISM_MEAN_MOVEMENT_SPEED)
+                #self.organism_mean_sprite.change_y = -int(ORGANISM_MEAN_MOVEMENT_SPEED)
+                #self.organism_low_var_sprite.change_y = -int(ORGANISM_LOW_VAR_MOVEMENT_SPEED)
+                #self.organism_high_var_sprite.change_y = -int(ORGANISM_HIGH_VAR_MOVEMENT_SPEED)
 
             if key == arcade.key.LEFT or key == arcade.key.A:
-                self.organism_mean_sprite.set_texture(self.organism_mean_sprite.current_left)
-                self.organism_mean_sprite.change_x = -int(ORGANISM_MEAN_MOVEMENT_SPEED)
-                self.organism_low_var_sprite.set_texture(self.organism_low_var_sprite.current_left)
-                self.organism_low_var_sprite.change_x = -int(ORGANISM_LOW_VAR_MOVEMENT_SPEED)
-                self.organism_high_var_sprite.set_texture(self.organism_high_var_sprite.current_left)
-                self.organism_high_var_sprite.change_x = -int(ORGANISM_HIGH_VAR_MOVEMENT_SPEED)
+                for org in self.player_list:
+                    org.change_x = -int(ORGANISM_MEAN_MOVEMENT_SPEED)
+                    org.set_texture(TEXTURE_LEFT)
+
+                #self.organism_mean_sprite.set_texture(self.organism_mean_sprite.current_left)
+                #self.organism_mean_sprite.change_x = -int(ORGANISM_MEAN_MOVEMENT_SPEED)
+                #self.organism_low_var_sprite.set_texture(self.organism_low_var_sprite.current_left)
+                #self.organism_low_var_sprite.change_x = -int(ORGANISM_LOW_VAR_MOVEMENT_SPEED)
+                #self.organism_high_var_sprite.set_texture(self.organism_high_var_sprite.current_left)
+                #self.organism_high_var_sprite.change_x = -int(ORGANISM_HIGH_VAR_MOVEMENT_SPEED)
 
             
             if key == arcade.key.RIGHT or key == arcade.key.D:
-                self.organism_mean_sprite.set_texture(self.organism_mean_sprite.current_right)
-                self.organism_mean_sprite.change_x = int(ORGANISM_MEAN_MOVEMENT_SPEED)
-                self.organism_low_var_sprite.set_texture(self.organism_low_var_sprite.current_right)
-                self.organism_low_var_sprite.change_x = int(ORGANISM_LOW_VAR_MOVEMENT_SPEED)
-                self.organism_high_var_sprite.set_texture(self.organism_high_var_sprite.current_right)
-                self.organism_high_var_sprite.change_x = int(ORGANISM_HIGH_VAR_MOVEMENT_SPEED)
+                for org in self.player_list:
+                    org.change_x = int(ORGANISM_MEAN_MOVEMENT_SPEED)
+                    org.set_texture(TEXTURE_RIGHT)
+
+                #self.organism_mean_sprite.set_texture(self.organism_mean_sprite.current_right)
+                #self.organism_mean_sprite.change_x = int(ORGANISM_MEAN_MOVEMENT_SPEED)
+                #self.organism_low_var_sprite.set_texture(self.organism_low_var_sprite.current_right)
+                #self.organism_low_var_sprite.change_x = int(ORGANISM_LOW_VAR_MOVEMENT_SPEED)
+                #self.organism_high_var_sprite.set_texture(self.organism_high_var_sprite.current_right)
+                #self.organism_high_var_sprite.change_x = int(ORGANISM_HIGH_VAR_MOVEMENT_SPEED)
 
                 #self.enemy.change_x = ENEMY_MOVEMENT_SPEED
                 #self.enemy.change_y = self.enemy.center_y - self.focal_organism.center_y
@@ -1844,15 +1967,37 @@ class MyGame(arcade.Window):
                 org.alpha = 50
             
             if key == arcade.key.KEY_1:
-                if self.organism_low_var_sprite in self.player_list:
-                    self.focal_organism = self.organism_low_var_sprite
+                if self.organism_var1_sprite in self.player_list:
+                    self.focal_organism = self.organism_var1_sprite
                     print("Key noted!")
             if key == arcade.key.KEY_2:
-                if self.organism_mean_sprite in self.player_list:
-                    self.focal_organism = self.organism_mean_sprite
+                if self.organism_var2_sprite in self.player_list:
+                    self.focal_organism = self.organism_var2_sprite
             if key == arcade.key.KEY_3:
-                if self.organism_high_var_sprite in self.player_list:
-                    self.focal_organism = self.organism_high_var_sprite
+                if self.organism_var3_sprite in self.player_list:
+                    self.focal_organism = self.organism_var3_sprite
+            if key == arcade.key.KEY_4:
+                if self.organism_var4_sprite in self.player_list:
+                    self.focal_organism = self.organism_var4_sprite
+            if key == arcade.key.KEY_5:
+                if self.organism_var5_sprite in self.player_list:
+                    self.focal_organism = self.organism_var5_sprite
+                    print("Key noted!")
+            if key == arcade.key.KEY_6:
+                if self.organism_var6_sprite in self.player_list:
+                    self.focal_organism = self.organism_var6_sprite
+            if key == arcade.key.KEY_7:
+                if self.organism_var7_sprite in self.player_list:
+                    self.focal_organism = self.organism_var7_sprite
+            if key == arcade.key.KEY_8:
+                if self.organism_var8_sprite in self.player_list:
+                    self.focal_organism = self.organism_var8_sprite
+            if key == arcade.key.KEY_9:
+                if self.organism_var9_sprite in self.player_list:
+                    self.focal_organism = self.organism_var9_sprite
+            if key == arcade.key.KEY_0:
+                if self.organism_var10_sprite in self.player_list:
+                    self.focal_organism = self.organism_var10_sprite
 
             self.focal_organism.alpha = 255
 
@@ -1893,22 +2038,30 @@ class MyGame(arcade.Window):
         
         ### IF YOU WANT CHARACTERS TO MOVE FREELY (i.e. without gravity) UNCOMMENT W AND S ###
         if key == arcade.key.UP or key == arcade.key.W:
-            self.organism_mean_sprite.change_y = 0
-            self.organism_low_var_sprite.change_y = 0
-            self.organism_high_var_sprite.change_y = 0
+            for org in self.player_list:
+                org.change_y = 0
+            #self.organism_mean_sprite.change_y = 0
+            #self.organism_low_var_sprite.change_y = 0
+            #self.organism_high_var_sprite.change_y = 0
 
         if key == arcade.key.DOWN or key == arcade.key.S:
-            self.organism_mean_sprite.change_y = 0
-            self.organism_low_var_sprite.change_y = 0
-            self.organism_high_var_sprite.change_y = 0
+            for org in self.player_list:
+                org.change_y = 0
+            #self.organism_mean_sprite.change_y = 0
+            #self.organism_low_var_sprite.change_y = 0
+            #self.organism_high_var_sprite.change_y = 0
         if key == arcade.key.LEFT or key == arcade.key.A:
-            self.organism_mean_sprite.change_x = 0
-            self.organism_low_var_sprite.change_x = 0
-            self.organism_high_var_sprite.change_x = 0
+            for org in self.player_list:
+                org.change_x = 0
+            #self.organism_mean_sprite.change_x = 0
+            #self.organism_low_var_sprite.change_x = 0
+            #self.organism_high_var_sprite.change_x = 0
         if key == arcade.key.RIGHT or key == arcade.key.D:
-            self.organism_mean_sprite.change_x = 0
-            self.organism_low_var_sprite.change_x = 0
-            self.organism_high_var_sprite.change_x = 0
+            for org in self.player_list:
+                org.change_x = 0
+            #self.organism_mean_sprite.change_x = 0
+            #self.organism_low_var_sprite.change_x = 0
+            #self.organism_high_var_sprite.change_x = 0
 
 
 
@@ -1919,7 +2072,14 @@ class MyGame(arcade.Window):
         if self.ready_to_breed == True:
             self.breed()
 
-        if len(self.player_list) == 0 and (self.making_histogram == False) and (self.level_complete == False):
+        death_count = 0
+
+        for i in self.player_list:
+            if i.dead == True:
+                death_count += 1
+        
+
+        if (len(self.player_list) == 0) and (self.making_histogram == False) and (self.level_complete == False) and (death_count >= 10):
             self.go_extinct()
 
         if self.level_complete==True:
@@ -1931,6 +2091,10 @@ class MyGame(arcade.Window):
             self.physics_engine_low_var.can_jump()
             self.physics_engine_high_var.can_jump()
             self.physics_engine_mean.increment_jump_counter()
+
+            for i in self.player_list:
+                i.physics_engine.can_jump()
+                i.physics_engine.update()
 
             # Call update on all sprites (The sprites don't do much in this example, though.)
             self.physics_engine_mean.update()
@@ -2330,10 +2494,16 @@ class MyGame(arcade.Window):
         if self.starter_string:
             # The problem is that if you keep doing this, it creates a recursive loop
             # Where you're always multiplying the thing by itself, a smalll fraction, plus another small fraction
-            self.update_scaling(self.starter_string)
-            self.scale_everyone()
+            
+            if self.scaling_updated == False:
 
-            print(self.CHARACTER_SCALING)
+                self.define_all_ten_sprites_images()
+                self.update_scaling(self.starter_string)
+                self.scale_everyone()
+                self.scaling_updated = True
+                
+
+            #print(self.CHARACTER_SCALING)
             
 
 
@@ -2342,13 +2512,18 @@ class MyGame(arcade.Window):
             
 
         if (self.current_state == "SELECT_FOCUS") or (self.current_state == "FOCUS_SELECTED"):
-            
-            self.draw_charles_darwin()
-            self.draw_prof_oak()
-            for i in self.oak2_list:
-                i.alpha = 0
-            self.draw_population_choice_text()
-            self.draw_choosable_histogram()
+            if self.starter_string:
+                self.draw_charles_darwin()
+                self.draw_prof_oak()
+                for i in self.oak2_list:
+                    i.alpha = 0
+                self.draw_population_choice_text()
+                if self.starter_string:
+                    #print("We've got a starter...they should be getting drawn.")
+        
+
+                    self.give_hist_coordinates_new(new_viewport)
+                    self.draw_choosable_histogram()
             
 
 
@@ -2356,18 +2531,33 @@ class MyGame(arcade.Window):
             print("Ready for that game!")
             self.current_state = "GAME"
             self.setup()
-
+            self.player_list = self.experimental_list
+            #self.focal_organism = self.focal_organism_list[self.horse_bet_on]
+            self.define_focal_organism_list()
+            self.scale_everyone()
+            print("The list of potential foci: ", self.focal_organism_list)
+            for org in self.player_list:
+                print("All textures:", org.textures)
+            
+            self.focal_organism = self.focal_organism_list[numpy.random.randint(0, len(self.focal_organism_list)-1)]
+            print("Focal organism/scale: ", self.focal_organism, self.focal_organism.scale)
+            
+            print("Length of player list:", len(self.player_list))
+            self.start_game = False
         #output = "CHOOSE YOUR CHARACTER"
         #arcade.draw_text(output, new_viewport[0]+50, new_viewport[2]+350, arcade.color.WHITE, 40)
 
 
     def draw_choosable_histogram(self):
         if self.current_state == "SELECT_FOCUS":
-            for i in self.hist_list:
+            g = 0
+            for i in self.experimental_list:
                 i.center_x -= 140
                 i.fading_in = True
                 i.fading_out = False
+                #print("Var",g,": ",i.scale)
                 #i.faded_in = False
+                g+=1
                 
                 i.draw()
 

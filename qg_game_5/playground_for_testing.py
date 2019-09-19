@@ -60,7 +60,7 @@ BOUNDARY_TREE_SCALING = 0.40
 STATIC_CHARACTER_SCALING = 0.1
 TILE_SCALING = 0.5
 COIN_SCALING = 0.5
-ENEMY_SCALING = 0.1
+GYARADOS_SCALING = 0.1
 
 # Set the speed at which the character increments
 ORGANISM_MEAN_MOVEMENT_SPEED = 20
@@ -72,7 +72,7 @@ ENEMY_MOVEMENT_SPEED = 1
 # Note: If you lower the gravity enough, you can "jump" in mid-air (i.e. fly) if your character has enough jump strength
 GRAVITY = 1.0
 HIST_GRAVITY = 0.1
-ORGANISM_MEAN_JUMP_SPEED = 10
+JUMP_SPEED = 10
 ORGANISM_LOW_VAR_JUMP_SPEED = 6
 ORGANISM_HIGH_VAR_JUMP_SPEED = 20
 
@@ -293,7 +293,7 @@ class MyGame(arcade.Window):
         self.qg_pokemon = arcade.Sprite("images/qg_pokemon.png", scale = 0.5)
         
 
-        self.pre_2_ready = False
+        self.jake_intro = False
 
         self.start_game = False
 
@@ -551,6 +551,9 @@ class MyGame(arcade.Window):
         self.experimental_list = arcade.SpriteList()
         self.define_all_ten_sprites_images()
 
+        for i in self.experimental_list:
+            i.textures_renewed = False
+
         
 
         #self.experimental_list.append(self.organism_var1_sprite)
@@ -634,30 +637,30 @@ class MyGame(arcade.Window):
         # The 'mirrored' argument will mirror whichever image we load.
 
         # Mean organism
-        texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING)
+        #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING)
         
-        self.organism_mean_sprite.textures.append(texture)
-        texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING)
-        self.organism_mean_sprite.textures.append(texture)
+        #self.organism_mean_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING)
+        #self.organism_mean_sprite.textures.append(texture)
         
         #Eliminating mated texture
         #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING)
         #self.organism_mean_sprite.textures.append(texture)
 
         # First Death
-        texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING)
-        self.organism_mean_sprite.textures.append(texture)
-        texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING)
-        self.organism_mean_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING)
+        #self.organism_mean_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING)
+        #self.organism_mean_sprite.textures.append(texture)
         # Eliminating mated texture
         #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING)
         #self.organism_mean_sprite.textures.append(texture)
 
         # Second Death
-        texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING)
-        self.organism_mean_sprite.textures.append(texture)
-        texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING)
-        self.organism_mean_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING)
+        #self.organism_mean_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING)
+        #self.organism_mean_sprite.textures.append(texture)
         #Eliminating mated texture
         #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING)
         #self.organism_mean_sprite.textures.append(texture)
@@ -665,29 +668,29 @@ class MyGame(arcade.Window):
 
         # Textures for the smallest variant of the organism
         # No deaths
-        texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_LOW_VAR)
-        self.organism_low_var_sprite.textures.append(texture)
-        texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_LOW_VAR)
-        self.organism_low_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_LOW_VAR)
+        #self.organism_low_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_LOW_VAR)
+        #self.organism_low_var_sprite.textures.append(texture)
         #Eliminating mated texture
         #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_LOW_VAR)
         #self.organism_low_var_sprite.textures.append(texture)
         
 
         # First death
-        texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_LOW_VAR*1.1)
-        self.organism_low_var_sprite.textures.append(texture)
-        texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_LOW_VAR*1.1)
-        self.organism_low_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_LOW_VAR*1.1)
+        #self.organism_low_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_LOW_VAR*1.1)
+        #self.organism_low_var_sprite.textures.append(texture)
         #Eliminating mated texture
         #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_LOW_VAR*1.1)
         #self.organism_low_var_sprite.textures.append(texture)
 
         # Second death
-        texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_LOW_VAR*1.2)
-        self.organism_low_var_sprite.textures.append(texture)
-        texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_LOW_VAR*1.2)
-        self.organism_low_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_LOW_VAR*1.2)
+        #self.organism_low_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_LOW_VAR*1.2)
+        #self.organism_low_var_sprite.textures.append(texture)
         #Eliminating mated texture
         #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_LOW_VAR*1.2)
         #self.organism_low_var_sprite.textures.append(texture)
@@ -695,38 +698,38 @@ class MyGame(arcade.Window):
 
         # Textures for the largest variant of the organism
         # No deaths
-        texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_HIGH_VAR)
-        self.organism_high_var_sprite.textures.append(texture)
-        texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_HIGH_VAR)
-        self.organism_high_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_HIGH_VAR)
+        #self.organism_high_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_HIGH_VAR)
+        #self.organism_high_var_sprite.textures.append(texture)
         #Eliminating mated texture
         #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_HIGH_VAR)
         #self.organism_high_var_sprite.textures.append(texture)
 
         # First death
-        texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_HIGH_VAR*0.9)
-        self.organism_high_var_sprite.textures.append(texture)
-        texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_HIGH_VAR*0.9)
-        self.organism_high_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_HIGH_VAR*0.9)
+        #self.organism_high_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_HIGH_VAR*0.9)
+        #self.organism_high_var_sprite.textures.append(texture)
         #Eliminating mated texture
         #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_HIGH_VAR*0.9)
         #self.organism_high_var_sprite.textures.append(texture)
 
         # Second death
-        texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_HIGH_VAR*0.8)
-        self.organism_high_var_sprite.textures.append(texture)
-        texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_HIGH_VAR*0.8)
-        self.organism_high_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_HIGH_VAR*0.8)
+        #self.organism_high_var_sprite.textures.append(texture)
+        #texture = arcade.load_texture(self.starter_organism, mirrored=True, scale=self.CHARACTER_SCALING_HIGH_VAR*0.8)
+        #self.organism_high_var_sprite.textures.append(texture)
         #Eliminating mated texture
         #texture = arcade.load_texture(self.starter_organism, scale=self.CHARACTER_SCALING_HIGH_VAR*0.8)
         #self.organism_high_var_sprite.textures.append(texture)
 
         # By default, face right.
-        self.organism_mean_sprite.set_texture(TEXTURE_RIGHT)
-        self.organism_low_var_sprite.set_texture(TEXTURE_RIGHT)
-        self.organism_high_var_sprite.set_texture(TEXTURE_RIGHT)
+        #self.organism_mean_sprite.set_texture(TEXTURE_RIGHT)
+        #self.organism_low_var_sprite.set_texture(TEXTURE_RIGHT)
+        #self.organism_high_var_sprite.set_texture(TEXTURE_RIGHT)
 
-        self.organism_high_var_sprite.pop_position = 10
+        #self.organism_high_var_sprite.pop_position = 10
 
        
         # Creates the ground
@@ -747,7 +750,7 @@ class MyGame(arcade.Window):
         
 
         # Set up the predator
-        self.enemy = arcade.Sprite("images/red_gyarados_right.png", ENEMY_SCALING)
+        self.enemy = arcade.Sprite("images/red_gyarados_right.png", GYARADOS_SCALING)
         self.enemy.center_x = -150
         self.enemy.center_y = 90
         #arcade.schedule(self.make_enemy, 5)
@@ -774,23 +777,27 @@ class MyGame(arcade.Window):
 
         self.darwin_list.append(self.darwin_sprite)
 
-        level_y_boundary = self.organism_high_var_sprite.textures[0].height * self.organism_high_var_sprite.textures[TEXTURE_RIGHT].scale
-        print("Min Boundary for y on boxes: ", level_y_boundary)
+        #level_y_boundary = self.organism_high_var_sprite.textures[0].height * self.organism_high_var_sprite.textures[TEXTURE_RIGHT].scale
+        #print("Min Boundary for y on boxes: ", level_y_boundary)
+        
+        level_y_boundary = 150
         level_y_boundary = level_y_boundary + self.hist_floor
 
-        print("Texture height: ", self.organism_high_var_sprite.textures[0].height)
-        print("Scaling for texture: ", self.organism_high_var_sprite.textures[TEXTURE_RIGHT].scale)
 
-        print("Scaling height: ", self.organism_high_var_sprite.textures[0].height * self.organism_high_var_sprite.textures[TEXTURE_RIGHT].scale)
+
+        #print("Texture height: ", self.organism_high_var_sprite.textures[0].height)
+        #print("Scaling for texture: ", self.organism_high_var_sprite.textures[TEXTURE_RIGHT].scale)
+
+        #print("Scaling height: ", self.organism_high_var_sprite.textures[0].height * self.organism_high_var_sprite.textures[TEXTURE_RIGHT].scale)
         # Put some crates on the ground
         # This shows using a coorinate list ot place sprites
-        coordinate_range_min = [200, self.hist_floor+40]
-        coordinate_range_max = [1000, self.hist_floor + 50]
+        rock_range_min = [200, self.hist_floor+40]
+        rock_range_max = [1000, self.hist_floor + 50]
 
         for coordinate in range(10):
             # Add a crate on the ground
-            x_coordinate = numpy.random.randint(coordinate_range_min[0], coordinate_range_max[0]) 
-            y_coordinate = numpy.random.randint(coordinate_range_min[1], coordinate_range_max[1])
+            x_coordinate = numpy.random.randint(rock_range_min[0], rock_range_max[0]) 
+            y_coordinate = numpy.random.randint(rock_range_min[1], rock_range_max[1])
 
 
             wall = arcade.Sprite("images/rock.png", TILE_SCALING)
@@ -941,6 +948,7 @@ class MyGame(arcade.Window):
 
 
 
+
         self.experimental_list.append(self.organism_var1_sprite)
         self.experimental_list.append(self.organism_var2_sprite)
         self.experimental_list.append(self.organism_var3_sprite)
@@ -959,9 +967,26 @@ class MyGame(arcade.Window):
                 i.textures.append(texture)
                 texture = arcade.load_texture("images/bulbasaur_right.png")
                 i.textures.append(texture)
+                print("We're bulbasaurs with our textures appended!")
+            elif self.starter_string == "charmander":
+                texture = arcade.load_texture("images/charmander_left.png")
+                i.textures.append(texture)
+                texture = arcade.load_texture("images/charmander_right.png")
+                i.textures.append(texture)
+                print("We're charmanders with our textures appended!")
+            elif self.starter_string == "squirtle":
+                texture = arcade.load_texture("images/squirtle_left.png")
+                i.textures.append(texture)
+                texture = arcade.load_texture("images/squirtle_right.png")
+                i.textures.append(texture)
+                print("We're squirtles with our textures appended!")
+            print("Length of textures:", len(i.textures))
+            
+
+
 
             i.invincible = False
-            i.alpha = 50
+            #i.alpha = 50
             i.physics_engine = ""
             i.dead = False
 
@@ -1069,7 +1094,7 @@ class MyGame(arcade.Window):
             print("Scale for var ", i+1,":", self.experimental_list[i].scale)
 
     def make_enemy(self, interval):
-            enemy = arcade.Sprite("images/red_gyarados_right.png", ENEMY_SCALING)
+            enemy = arcade.Sprite("images/red_gyarados_right.png", GYARADOS_SCALING)
             enemy.center_x = -150
             enemy.center_y = 90
             physics_engine_enemy = arcade.PhysicsEnginePlatformer(self.enemy, self.enemy_wall_list, GRAVITY)
@@ -1237,25 +1262,25 @@ class MyGame(arcade.Window):
 
 
     def fade_in_and_out_better(self, target, rate_in=1, rate_out=1):
+        if not ((target.fading_out == True) and (target.alpha == 0)):
+            if (target.fading_in == True) and (target.alpha == 255):
+                target.alpha = 0
 
-        if (target.fading_in == True) and (target.alpha == 255):
-            target.alpha = 0
+            if target.fading_in == True:
+                target.alpha += rate_in
 
-        if target.fading_in == True:
-            target.alpha += rate_in
+            if (target.fading_in == True) and target.alpha > 240:
+                target.fading_in = False
+                target.fading_out = True
 
-        if (target.fading_in == True) and target.alpha > 240:
-            target.fading_in = False
-            target.fading_out = True
+            if (target.fading_out == True) and (target.alpha > 0):
+                target.alpha -= rate_out
 
-        if (target.fading_out == True) and (target.alpha > 0):
-            target.alpha -= rate_out
+            elif (target.fading_out == True) and (target.alpha <= 0):
+                target.alpha = 0
 
-        elif (target.fading_out == True) and (target.alpha <= 0):
-            target.alpha = 0
-
-        if target.alpha > 0:
-            target.draw()
+            if target.alpha > 0:
+                target.draw()
 
 
         #if (target.fading_in == True) and (target.alpha == 255):
@@ -1286,11 +1311,12 @@ class MyGame(arcade.Window):
         self.fade_in_and_out_better(target_list[0], rate_in, rate_out)
         
         for i in range(len(target_list[start_range:end_range])):
-            if (target_list[i-1].alpha < upper_threshold) and (target_list[i-1].fading_out == True):
-                self.fade_in_and_out_better(target_list[i], rate_in, rate_out)
-                #### CURRENTLY AN ISSUE WHERE THE FIRST ONE FLICKERS--FIX THIS BY MAKING THIS METHOD NOT APPLY TO THE ONE CALLED ALONE BEFOREHAND ###
-            elif (target_list[i].fading_out == True) or (target_list[i].alpha != 255):
-                self.fade_in_and_out_better(target_list[i], rate_in, rate_out)
+            if not ((target_list[i].alpha == 0) and (target_list[i].fading_out == True)):
+                if (target_list[i-1].alpha < upper_threshold) and (target_list[i-1].fading_out == True):
+                    self.fade_in_and_out_better(target_list[i], rate_in, rate_out)
+                    #### CURRENTLY AN ISSUE WHERE THE FIRST ONE FLICKERS--FIX THIS BY MAKING THIS METHOD NOT APPLY TO THE ONE CALLED ALONE BEFOREHAND ###
+                elif (target_list[i].fading_out == True) or (target_list[i].alpha != 255):
+                    self.fade_in_and_out_better(target_list[i], rate_in, rate_out)
 
                 #if target_list[i].alpha <= 125 and (target_list[i].fading_out == False):
                 #    if ((i+1) < len(target_list)) and (target_list[i-1].fading_out == False):
@@ -1310,6 +1336,8 @@ class MyGame(arcade.Window):
         
         message.center_x = new_viewport[0] + 300
         message.center_y = new_viewport[2] + 400
+
+
 
         
        
@@ -1383,7 +1411,7 @@ class MyGame(arcade.Window):
             if target.fade_count > 1:
                 self.current_state = "OPENING"
             target.fade_count += 1
-            self.pre_2_ready = True
+            self.jake_intro = True
 
             
 
@@ -1393,7 +1421,7 @@ class MyGame(arcade.Window):
         
         viewport = arcade.get_viewport()
         
-        if not self.pre_2_ready:
+        if not self.jake_intro:
             self.jake.center_x = viewport[0] + 400
             self.jake.center_y = viewport[2] + 300
             self.fade_in_and_out(self.jake, self.pre_intro_1_started)
@@ -1404,7 +1432,7 @@ class MyGame(arcade.Window):
         if self.jake.alpha == 0:
             self.jake.set_texture(0)
         
-        if self.pre_2_ready == True:  
+        if self.jake_intro == True:  
               
             self.jake.center_x = viewport[0] + 400
             self.jake.center_y = viewport[2] + 360
@@ -1412,7 +1440,7 @@ class MyGame(arcade.Window):
             #self.fade_in_and_out(self.warlak, self.warlak_pre)
             
 
-        #if (self.jake.faded == True) and (self.pre_2_ready == True):
+        #if (self.jake.faded == True) and (self.jake_intro == True):
         #    self.current_state = "OPENING"
 
 
@@ -1453,15 +1481,18 @@ class MyGame(arcade.Window):
 
         if self.current_state == "SELECT_FOCUS":
 
-            for i in range(len(self.experimental_list)-1):
-                new_check = self.experimental_list[i].collides_with_point((x, y))
+            for i in self.experimental_list:
+                new_check = i.collides_with_point((x, y))
                 if new_check == True:
-                    self.horse_bet_on = i
+                    print("Picked a focus!")
+                    self.focal_organism = i
+                    
+
                     arcade.play_sound(select)
                     
                     self.start_game = True
         
-        if self.current_state == "SPECIES_SELECTION":
+        if (self.current_state == "SPECIES_SELECTION") and (self.starters_list != None):
             
             
             
@@ -1581,7 +1612,7 @@ class MyGame(arcade.Window):
         self.organism_var10_sprite.center_y = self.hist_floor + 5
         self.organism_var10_sprite.center_x = self.organism_var9_sprite.center_x + 85
 
-        self.hist_coords_given = True
+        #self.hist_coords_given = True
 
 
     def draw_game(self):
@@ -1621,6 +1652,7 @@ class MyGame(arcade.Window):
 
         if self.level_complete:
             self.make_histogram()
+            
 
         if self.extinction:
             extinction_text = f"EXTINCTION!"
@@ -1650,11 +1682,24 @@ class MyGame(arcade.Window):
             low_var_base_x = new_viewport[0]
 
             if self.hist_coords_given == False:
-                self.give_hist_coordinates(new_viewport)
+                
+                self.give_hist_coordinates_new(new_viewport)
+                self.hist_coords_given = True
+
+            #self.draw_non_choosable_histogram()
+            #self.define_all_ten_sprites_images()
+            for i in self.experimental_list:
+                i.point = ""
+                i.paired_x = False
+                i.paired_y = False
+                i.faded_in = False
+                i.mating_point = False
+                i.i_am_focal = False
+                i.draw()
             
             # Note: Viewport bottom is -57 and current hist_list[1] is 115 - 50
 
-
+            """
             if self.hist_fading_in == False:
                 for i in self.hist_list:
                     i.alpha = 0
@@ -1753,7 +1798,7 @@ class MyGame(arcade.Window):
                     self.hist_list[9].alpha -= 5
             self.hist_list[9].draw()
             
-            
+            """
             
 
             
@@ -1792,6 +1837,8 @@ class MyGame(arcade.Window):
         
 
     def set_breeding_coordinates(self, viewport):
+        print("I've set the breeding_coordinates!")
+
         left = viewport[0]
         width = viewport[1] 
         bot = viewport[2]
@@ -1839,6 +1886,7 @@ class MyGame(arcade.Window):
     def on_key_press(self, key, modifiers):
         """ Called whenever a key is pressed. """
         
+
         current_viewport = arcade.get_viewport()
 
         #### NOT YET ABLE TO GET EVERYONE FLYING OFF AND BREEDING ####
@@ -1880,16 +1928,20 @@ class MyGame(arcade.Window):
 
 
         if (self.level_complete == False) and (self.extinction == False):
+            for i in self.player_list:
+                i.alpha = 50
+            self.focal_organism.alpha = 255
+            
             if key == arcade.key.UP or key == arcade.key.W:
                 for org in self.player_list:
                     if org.physics_engine.can_jump():
-                        org.change_y = int(ORGANISM_MEAN_JUMP_SPEED)
+                        org.change_y = int(JUMP_SPEED)
                 ### UNCOMMENT LINES BELOW FOR JUMPING ABILITY/SOUND IN SIDE-TO-SIDE PLATFORMER ###
                 #if self.physics_engine.can_jump():
-                #self.organism_mean_sprite.change_y = ORGANISM_MEAN_JUMP_SPEED
+                #self.organism_mean_sprite.change_y = JUMP_SPEED
 
                 #if self.physics_engine_mean.can_jump():
-                #    self.organism_mean_sprite.change_y = int(ORGANISM_MEAN_JUMP_SPEED)
+                #    self.organism_mean_sprite.change_y = int(JUMP_SPEED)
                 
                 #if self.physics_engine_low_var.can_jump():
                 #    self.organism_low_var_sprite.change_y = int(ORGANISM_LOW_VAR_JUMP_SPEED)
@@ -1898,6 +1950,10 @@ class MyGame(arcade.Window):
                 #    self.organism_high_var_sprite.change_y = int(ORGANISM_HIGH_VAR_JUMP_SPEED)
 
                 #arcade.play_sound(self.jump_sound)
+            #for i in self.experimental_list:
+             #   if i.textures_renewed == False:
+            #        self.renew_textures()
+
             if key == arcade.key.DOWN or key == arcade.key.S:
 
                 for org in self.player_list:
@@ -1920,9 +1976,11 @@ class MyGame(arcade.Window):
 
             
             if key == arcade.key.RIGHT or key == arcade.key.D:
+                self.organism_var5_sprite.set_texture(1)
                 for org in self.player_list:
                     org.change_x = int(ORGANISM_MEAN_MOVEMENT_SPEED)
                     org.set_texture(TEXTURE_RIGHT)
+                    
 
                 #self.organism_mean_sprite.set_texture(self.organism_mean_sprite.current_right)
                 #self.organism_mean_sprite.change_x = int(ORGANISM_MEAN_MOVEMENT_SPEED)
@@ -1963,8 +2021,8 @@ class MyGame(arcade.Window):
                 #self.focal_organism = self.focal_organism_list[0]
             # When Tab is pressed
             
-            for org in self.player_list:
-                org.alpha = 50
+            #for org in self.player_list:
+            #    org.alpha = 255
             
             if key == arcade.key.KEY_1:
                 if self.organism_var1_sprite in self.player_list:
@@ -2087,6 +2145,8 @@ class MyGame(arcade.Window):
 
         if self.current_state == "GAME":
 
+            self.focal_organism.alpha = 255
+
             self.physics_engine_mean.can_jump()
             self.physics_engine_low_var.can_jump()
             self.physics_engine_high_var.can_jump()
@@ -2137,18 +2197,24 @@ class MyGame(arcade.Window):
             # In order to prevent constant calling of the method on update, adjust this attribute
             
 
+            
+
+
             # Check for collision with Darwin (end level)
-            darwin_hit_list = arcade.check_for_collision_with_list(self.organism_mean_sprite, self.darwin_list)
-            darwin_hit_list2 = arcade.check_for_collision_with_list(self.organism_low_var_sprite, self.darwin_list)
-            darwin_hit_list3 = arcade.check_for_collision_with_list(self.organism_high_var_sprite, self.darwin_list)
+            #darwin_hit_list = arcade.check_for_collision_with_list(self.organism_mean_sprite, self.darwin_list)
+            #darwin_hit_list2 = arcade.check_for_collision_with_list(self.organism_low_var_sprite, self.darwin_list)
+            #darwin_hit_list3 = arcade.check_for_collision_with_list(self.organism_high_var_sprite, self.darwin_list)
 
             # Creates a master list so that all characters can be checked at once
             master_darwin_list = [
-            darwin_hit_list,
-            darwin_hit_list2,
-            darwin_hit_list3
+            #darwin_hit_list,
+            #darwin_hit_list2,
+            #darwin_hit_list3
             ]
 
+            for i in self.player_list:
+                darwin_hit_list = arcade.check_for_collision_with_list(i, self.darwin_list)
+                master_darwin_list.append(darwin_hit_list)
 
             # When they reach Darwin
             for darwin_hit_list in master_darwin_list:
@@ -2158,6 +2224,7 @@ class MyGame(arcade.Window):
                     mixer.music.fadeout(5000)
                     darwin.remove_from_sprite_lists()
                     self.player_list = arcade.SpriteList()
+                    self.draw_non_choosable_histogram()
 
                 
                 for player in darwin_hit_list:
@@ -2170,29 +2237,29 @@ class MyGame(arcade.Window):
 
 
             # See if we hit any coins
-            coin_hit_list = arcade.check_for_collision_with_list(self.organism_mean_sprite, self.coin_list)
-            coin_hit_list2 = arcade.check_for_collision_with_list(self.organism_low_var_sprite, self.coin_list)
-            coin_hit_list3 = arcade.check_for_collision_with_list(self.organism_high_var_sprite, self.coin_list)
+            #coin_hit_list = arcade.check_for_collision_with_list(self.organism_mean_sprite, self.coin_list)
+            #coin_hit_list2 = arcade.check_for_collision_with_list(self.organism_low_var_sprite, self.coin_list)
+            #coin_hit_list3 = arcade.check_for_collision_with_list(self.organism_high_var_sprite, self.coin_list)
 
 
             # Check to see if we've come into contact with any mates
-            mate_hit_list = arcade.check_for_collision_with_list(self.organism_mean_sprite, self.mate_list)
-            mate_hit_list2 = arcade.check_for_collision_with_list(self.organism_low_var_sprite, self.mate_list)
-            mate_hit_list3 = arcade.check_for_collision_with_list(self.organism_high_var_sprite, self.mate_list)
+            #mate_hit_list = arcade.check_for_collision_with_list(self.organism_mean_sprite, self.mate_list)
+            #mate_hit_list2 = arcade.check_for_collision_with_list(self.organism_low_var_sprite, self.mate_list)
+            #mate_hit_list3 = arcade.check_for_collision_with_list(self.organism_high_var_sprite, self.mate_list)
 
             # Creates a master list so that all characters can be checked at once
-            master_coin_list = [
-            coin_hit_list,
-            coin_hit_list2,
-            coin_hit_list3
-            ]
+            #master_coin_list = [
+            #coin_hit_list,
+            #coin_hit_list2,
+            #coin_hit_list3
+            #]
 
             # Creates a master list so that all characters can be checked at once
-            master_mate_list = [
-            mate_hit_list,
-            mate_hit_list2,
-            mate_hit_list3
-            ]
+            #master_mate_list = [
+            #mate_hit_list,
+            #mate_hit_list2,
+            #mate_hit_list3
+            #]
 
             player_master_hit_hist = []
             for enemy in self.enemy_list:
@@ -2204,15 +2271,9 @@ class MyGame(arcade.Window):
                 for player in player_hit_list:
                     self.check_invincibility(player)
                     if player.invincible == False:
-                        if player == self.organism_low_var_sprite:
+                        if player in self.player_list:
                             #self.self.CHARACTER_SCALING_LOW_VAR = self.self.CHARACTER_SCALING_LOW_VAR * 1.2
-                            if self.organism_low_var_sprite.deaths < 3:
-                                self.organism_low_var_sprite.deaths += 1
-                                self.die_and_reincarnate(player)
-                            self.bottom_dead = True
-                            
-                            if self.organism_low_var_sprite.deaths == 3:
-                                player.remove_from_sprite_lists()
+                            player.remove_from_sprite_lists()
 
                             print("HUMPTY!")
                         elif player == self.organism_high_var_sprite:
@@ -2220,7 +2281,7 @@ class MyGame(arcade.Window):
                             if self.organism_high_var_sprite.deaths < 3:
                                 self.organism_high_var_sprite.deaths += 1
                                 
-                                self.die_and_reincarnate(player)
+                                #self.die_and_reincarnate(player)
 
                             self.top_dead = True
                             if self.organism_high_var_sprite.deaths == 3:
@@ -2229,7 +2290,7 @@ class MyGame(arcade.Window):
                             if self.organism_mean_sprite.deaths < 4:
                                 
                                 self.organism_mean_sprite.deaths += 1
-                                self.die_and_reincarnate(player)
+                                #self.die_and_reincarnate(player)
                             self.mean_dead = True
                             if self.organism_mean_sprite.deaths == 4:
                                 player.remove_from_sprite_lists()
@@ -2443,7 +2504,25 @@ class MyGame(arcade.Window):
             
         
     def renew_textures(self):
-        self.player_list[0].textures[0] = arcade.load_texture(self.starter_organism, self.CHARACTER_SCALING)
+        
+        for i in self.experimental_list:
+            if self.starter_string == "bulbasaur":
+                texture = arcade.load_texture("images/bulbasaur_left.png")
+                i.textures.append(texture)
+                texture = arcade.load_texture("images/bulbasaur_right.png")
+                i.textures.append(texture)
+            elif self.starter_string == "charmander":
+                texture = arcade.load_texture("images/charmander_left.png")
+                i.textures.append(texture)
+                texture = arcade.load_texture("images/charmander_right.png")
+                i.textures.append(texture)
+            elif self.starter_string == "squirtle":
+                texture = arcade.load_texture("images/squirtle_left.png")
+                i.textures.append(texture)
+                texture = arcade.load_texture("images/squirtle_right.png")
+                i.textures.append(texture)
+            i.set_texture(TEXTURE_RIGHT)
+
         print("FROM RENEW", self.starter_organism)
 
 
@@ -2487,8 +2566,8 @@ class MyGame(arcade.Window):
             self.fade_in_and_out_better(self.oak2_list[6], rate_in=5)
 
 
-        self.redefine_hist_sprites()
-        self.give_hist_coordinates(new_viewport)
+        #self.redefine_hist_sprites()
+        #self.give_hist_coordinates(new_viewport)
         #print(self.starter_string)
         
         if self.starter_string:
@@ -2535,11 +2614,11 @@ class MyGame(arcade.Window):
             #self.focal_organism = self.focal_organism_list[self.horse_bet_on]
             self.define_focal_organism_list()
             self.scale_everyone()
-            print("The list of potential foci: ", self.focal_organism_list)
-            for org in self.player_list:
-                print("All textures:", org.textures)
             
-            self.focal_organism = self.focal_organism_list[numpy.random.randint(0, len(self.focal_organism_list)-1)]
+            
+            
+            
+            
             print("Focal organism/scale: ", self.focal_organism, self.focal_organism.scale)
             
             print("Length of player list:", len(self.player_list))
@@ -2555,11 +2634,27 @@ class MyGame(arcade.Window):
                 i.center_x -= 140
                 i.fading_in = True
                 i.fading_out = False
+                i.i_am_focal = False
+                i.textures = []
+                i.textures_renewed = False
                 #print("Var",g,": ",i.scale)
                 #i.faded_in = False
                 g+=1
                 
                 i.draw()
+
+    def draw_non_choosable_histogram(self):
+        g = 0
+        for i in self.experimental_list:
+            i.center_x -= 140
+            i.fading_in = True
+            i.fading_out = False
+            #print("Var",g,": ",i.scale)
+            #i.faded_in = False
+            g+=1
+            
+            
+            i.draw()
 
     def draw_population_choice_text(self):
         if self.current_state == "SELECT_FOCUS":
@@ -2727,21 +2822,22 @@ class MyGame(arcade.Window):
         #self.honeymoon_ready = True
         self.set_breeding_coordinates(current_viewport)
         
-        for i in range(len(self.hist_list)):
+        for i in range(len(self.experimental_list)):
             g = i - 1
 
             breeding_coordinates = self.breeding_coordinates
 
-            if self.hist_list[g].mating_point == False:
+            if self.experimental_list[g].mating_point == False:
                 # Establish semi-permanent mating coordinates for each organism
-                self.hist_list[g].point = numpy.random.randint(0, len(breeding_coordinates))
+                self.experimental_list[g].point = numpy.random.randint(0, len(breeding_coordinates))
             
             # Shorthand
-            point = self.hist_list[g].point
+            point = self.experimental_list[g].point
 
+            print("This guy's point: ", point)
             # Flip a switch so that all organisms don't continue to get new points
             if breeding_coordinates[point] not in self.used_coords:
-                self.hist_list[g].mating_point = True
+                self.experimental_list[g].mating_point = True
         
             
             
@@ -2749,37 +2845,40 @@ class MyGame(arcade.Window):
             
             
             
-            if self.hist_list[g].center_x == breeding_coordinates[point][0]:
-                self.hist_list[g].change_x = 0
-                self.hist_list[g].paired_x = True
-            elif self.hist_list[g].center_x > (breeding_coordinates[point][0]):
-                self.hist_list[g].change_x = -5
-            elif self.hist_list[g].center_x < (breeding_coordinates[point][0]):
-                self.hist_list[g].change_x = 5
+            if self.experimental_list[g].center_x == breeding_coordinates[point][0]:
+                self.experimental_list[g].change_x = 0
+                self.experimental_list[g].paired_x = True
+            elif self.experimental_list[g].center_x > (breeding_coordinates[point][0]):
+                self.experimental_list[g].change_x = -5
+            elif self.experimental_list[g].center_x < (breeding_coordinates[point][0]):
+                self.experimental_list[g].change_x = 5
             
 
             
 
 
             
-            if self.hist_list[g].center_y > (breeding_coordinates[point][1]):
-                self.hist_list[g].change_y = -5
-            elif self.hist_list[g].center_y < (breeding_coordinates[point][1]):
-                self.hist_list[g].change_y = 5
+            if self.experimental_list[g].center_y > (breeding_coordinates[point][1]):
+                self.experimental_list[g].change_y = -5
+            elif self.experimental_list[g].center_y < (breeding_coordinates[point][1]):
+                self.experimental_list[g].change_y = 5
             else:
-                self.hist_list[g].change_y = 0
-                self.hist_list[g].paired_y = True
+                self.experimental_list[g].change_y = 0
+                self.experimental_list[g].paired_y = True
 
             
 
             self.used_coords.append(breeding_coordinates[point])
-        if not self.paired_count >= 10:
+        if not self.paired_count >= len(self.experimental_list):
             self.paired_count = 0
 
-            for i in self.hist_list:
+            for i in self.experimental_list:
                 if (i.paired_y and i.paired_x) == True:
                     self.paired_count += 1
-        if self.paired_count >= 10:
+            print("Pre-honeymoon but really close!")
+
+        if self.paired_count >= len(self.experimental_list):
+            print("At the honeymoon!")
             self.honeymoon()
 
 
@@ -2800,7 +2899,7 @@ class MyGame(arcade.Window):
         random_mating = "Random Mating!"
         arcade.draw_text(random_mating, new_viewport[0] + 450, new_viewport[2] + 500, 
                          arcade.csscolor.WHITE, 40)
-        for i in self.hist_list:
+        for i in self.experimental_list:
             i.change_y = 5
 
         for heart in self.heart_list:

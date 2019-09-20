@@ -46,7 +46,7 @@ TEXTURE_RIGHT = 1
 
 # Constants used to scale stationary objects
 CLOUD_SCALING = 0.05
-MOUNTAIN_SCALING = 0.5
+
 BOUNDARY_TREE_SCALING = 0.40
 
 
@@ -56,12 +56,14 @@ GYARADOS_SCALING = 0.1
 # Set the speed at which the character increments
 ORGANISM_MEAN_MOVEMENT_SPEED = 20
 JUMP_SPEED = 15
-ENEMY_MOVEMENT_SPEED = 1
+ENEMY_MOVEMENT_SPEED = 3
 
 # Controls how fast the character returns to the ground after jumping or "flying" (i.e. traveling upward at a rate)
 GRAVITY = 1.0
 
+ENEMY_GRAVITY = 0.5
 
+level = 1
 
 # How many pixels to keep as a minimum margin between the character
 # and the edge of the screen
@@ -123,6 +125,11 @@ class MyGame(arcade.Window):
 		# Select sound
 		self.select = arcade.load_sound("sounds/select.wav")
 
+		# HAY sound
+		self.HAY = arcade.load_sound("sounds/Hay.wav")
+
+		self.HAY_played = False
+
 		# Represents whichever song is currently playing; default is introductory fairy-fountain music
 		self.current_music = mixer.music.load(self.intro_music)
 
@@ -150,7 +157,9 @@ class MyGame(arcade.Window):
 		self.pop_7_alive = True
 		self.pop_8_alive = True
 		self.pop_9_alive = True
-	    
+
+		# A switch for breeding
+		self.breeding = False
 
 		# Holds AN enemy sprite that can be used for debugging
 		self.enemy = None
@@ -186,7 +195,7 @@ class MyGame(arcade.Window):
 		self.focal_organism_list = []
 
 		# The current level
-		self.level = 1
+		self.level = level
 
 		# Sets the background screen fade
 		self.fade_stage_1 = False
@@ -225,6 +234,8 @@ class MyGame(arcade.Window):
 		# Switches extinction on and ends the game
 		self.extinction = False
 
+		self.new_mean = 0
+
 		# Used in analog sunset method; holds the start time to be compared to the current time
 		self.start_time = ""
 
@@ -253,8 +264,9 @@ class MyGame(arcade.Window):
 		# Designate the "floor" for the histogram characters ###### CHANGE NAME #########
 		self.hist_floor = 70
 
+
 		# Represents the end of the level--Darwin/a flag goes here!
-		self.end_of_level = 1200
+		self.end_of_level = self.level * 1000
 
 		# A switch to use to position all sprites in their proper places just ONCE
 		self.sprites_positioned = False
@@ -330,11 +342,11 @@ class MyGame(arcade.Window):
 
 		### BOUNDARY LEFT IMAGE ####
 		# Makes a giant 'boundary tree' that prevents characters from walking (left) off the face of the Earth
-		tree = arcade.Sprite("images/tiles/boundary_tree.png", BOUNDARY_TREE_SCALING/2)
+		tree = arcade.Sprite("images/tiles/boundary_tree.png", BOUNDARY_TREE_SCALING)
 
 		# Sets this tree at -350 = x and 265 = y (about the height of the 'sky'/clouds/forest trees)
-		tree.center_x = -250
-		tree.center_y = 15
+		tree.center_x = -300
+		tree.center_y = 250
 
 		# This tree is only relevant to players (it doesn't affect enemies), so we'll only append...
 		# ...it to wall list
@@ -343,13 +355,14 @@ class MyGame(arcade.Window):
 
 		### SET UP MOUNTAIN ###
 
+		self.MOUNTAIN_SCALING = numpy.random.uniform(0.5, 3)
 		# This sets up a mountain as a climbing obstacle if smaller organisms are being (deliberately)...
 		# ...given a hard time
-		mountain = arcade.Sprite("images/mountain.png", MOUNTAIN_SCALING)
+		mountain = arcade.Sprite("images/mountain.png", self.MOUNTAIN_SCALING)
 
 		# Gives the mountain coordinates based on random generation
-		mountain.center_x = numpy.random.randint(200, 500)
-		mountain.center_y = numpy.random.randint(150, 300)
+		mountain.center_x = numpy.random.randint(200, self.end_of_level)
+		mountain.center_y = self.hist_floor
 
 		# Adds the mountain to the wall lists (it's treated as a wall in physics engines)
 		self.wall_list.append(mountain)
@@ -362,10 +375,10 @@ class MyGame(arcade.Window):
 		rock_range_min = [200, self.hist_floor+40]
 
 		# Maximum x/y coordinates for rocks/obstacles
-		rock_range_max = [1000, self.hist_floor + 50]
+		rock_range_max = [self.end_of_level*self.level, self.hist_floor + 100]
 
 		# Makes however many rocks you want (range)
-		for coordinate in range(10):
+		for coordinate in range(self.level*10):
 
 			# Uses numpy to randomly generated coordinates within the min/max shown above
 			x_coordinate = numpy.random.randint(rock_range_min[0], rock_range_max[0]) 
@@ -756,6 +769,8 @@ class MyGame(arcade.Window):
 		# Set up the predator's image and scaling
 		self.enemy = arcade.Sprite("images/red_gyarados_right.png", GYARADOS_SCALING)
 
+
+
 		# Sets the starting position of the enemy well-behind the player's starting position
 		self.enemy.center_x = -150
 
@@ -768,6 +783,8 @@ class MyGame(arcade.Window):
 		# Adds the main enemy generated to the enemy_list
 		self.enemy_list.append(self.enemy)
 
+		for enemy in self.enemy_list:
+			enemy.speed = numpy.random.randint(1, ENEMY_MOVEMENT_SPEED*2)
 
 
 
@@ -779,7 +796,7 @@ class MyGame(arcade.Window):
 		# Note: Player physics engines will be created in the "define all sprites" area
 
 		# Creates a physics engine for a single enemy (if there's just one)
-		self.physics_engine_enemy = arcade.PhysicsEnginePlatformer(self.enemy, self.enemy_wall_list, GRAVITY)
+		self.physics_engine_enemy = arcade.PhysicsEnginePlatformer(self.enemy, self.enemy_wall_list, ENEMY_GRAVITY)
 
 		# Adds the single-enemy physics-engine to the enemy physics-engine list
 		self.enemy_physics_engine_list.append(self.physics_engine_enemy)
@@ -807,6 +824,18 @@ class MyGame(arcade.Window):
 
 
 		############################# SETUP METHOD HAS BEEN CLEANED #############################
+
+	def make_enemies(self, level):
+		for i in range(level-1):
+			new_enemy = arcade.Sprite("images/red_gyarados_right.png", GYARADOS_SCALING)
+			new_enemy.physics_engine = arcade.PhysicsEnginePlatformer(new_enemy, self.enemy_wall_list, ENEMY_GRAVITY)
+			self.enemy_list.append(new_enemy)
+			self.enemy_physics_engine_list.append(new_enemy.physics_engine)
+			new_enemy.center_x = -200
+			new_enemy.center_y = self.hist_floor
+
+		for enemy in self.enemy_list:
+			enemy.speed = numpy.random.randint(1, ENEMY_MOVEMENT_SPEED*2)
 
 
 	def define_all_ten_sprites_images(self):
@@ -940,6 +969,7 @@ class MyGame(arcade.Window):
 
 
 		if self.ready_to_breed == False:
+			print("Is this happening at the end somehow?")
 		# Make a histogram list that contains all the same sprites but can have others (dummies) added
 			self.histogram_list.append(self.organism_var1_sprite)
 			self.histogram_list.append(self.organism_var2_sprite)
@@ -998,11 +1028,17 @@ class MyGame(arcade.Window):
 		# Var 8 Organism Dummies
 		self.histogram_list.append(self.organism_var9_dummy1)
 
+		for i in self.histogram_list:
+			i.mating_point = False
+			i.point = ""
+			i.paired_y = ""
+			i.paired_x = ""
 
 		for i in self.experimental_list:
 			i.physics_engine = arcade.PhysicsEnginePlatformer(i, self.wall_list, GRAVITY)
 			self.player_physics_engines_list.append(i.physics_engine)
 			i.physics_engine.can_jump()
+			i.jump = 0
 
 
         # Check to see which starter was chosen and change textures
@@ -1080,6 +1116,7 @@ class MyGame(arcade.Window):
 
 			# Set all textures equal to the player's scale
 			for i in self.player_list:
+
 				for texture in i.textures:
 					texture.scale = i.scale
 			
@@ -1157,6 +1194,7 @@ class MyGame(arcade.Window):
 			for org in self.experimental_list:
 				for texture in org.textures:
 					texture.scale = org.scale
+
 					
 
 			#for org in self.histogram_list:
@@ -1324,7 +1362,7 @@ class MyGame(arcade.Window):
 			self.jake.center_x = viewport[0] + 400
 			self.jake.center_y = viewport[2] + 300
 			# Fade-in-and-out logo
-			self.fade_in_and_out_better(self.jake, 15, 15)
+			self.fade_in_and_out_better(self.jake, 2, 2)
 
 
 		# Once the first logo has faded out, change the image to the warlak and advance
@@ -1346,7 +1384,7 @@ class MyGame(arcade.Window):
 			# Reorient the image slightly for the warlak
 			self.jake.center_x = viewport[0] + 400
 			self.jake.center_y = viewport[2] + 360
-			self.fade_in_and_out_better(self.jake, 15, 15)
+			self.fade_in_and_out_better(self.jake, 2, 2)
 
 			# Don't advance the scene until warlak is invisible
 			if self.jake.alpha == 0:
@@ -1467,14 +1505,18 @@ class MyGame(arcade.Window):
 			if self.darwin_dialogue == True:
                 #self.prof_oak_dialogue = False
 				self.draw_charles_darwin()
+				if not self.HAY_played:
+					self.HAY.play()
+					self.HAY_played = True
+
 				# In this case, draw Darwin separately because he isn't fading in
 				self.darwin_sprite.draw()
 
 				# Check to see if Darwin's played his sound so that it doesn't repeat over and over
 				if self.darwin_sound_1_played == False:
 					# Load and play Darwin's sound and identify it as played
-					annoyed = arcade.load_sound("sounds/darwin_annoyed.wav")
-					annoyed.play()
+					#annoyed = arcade.load_sound("sounds/darwin_annoyed.wav")
+					#annoyed.play()
 					self.darwin_sound_1_played = True
 
 
@@ -1863,6 +1905,10 @@ class MyGame(arcade.Window):
 			i.center_y -= 250
 			i.fading_in = True
 			i.fading_out = False
+			i.mating_point = False
+			i.point = False
+			i.paired_y = ""
+			i.paired_x = ""
 			# Scale all textures to be equal to the character
 			#for texture in i.textures:
 			#	texture.scale = i.scale
@@ -1876,6 +1922,7 @@ class MyGame(arcade.Window):
 			i.center_x -= 140
 			i.fading_in = True
 			i.fading_out = False
+			i.jump = i.scale * 300
 			# Scale all textures to be equal to the character
 			for texture in i.textures:
 				texture.scale = i.scale
@@ -1942,7 +1989,9 @@ class MyGame(arcade.Window):
 
 	# Gives a scaling update based on the pokemon chosen
 	def update_scaling(self, starter_string):
+		print("Current level: ", self.level)
 		new_mean = pop_keeper.mean_phenotypic_trait_value_list[self.level-1]
+		new_var = pop_keeper.additive_genetic_variance_list[self.level-1]
 		# If bulbasaur is chosen, set the variance and standard deviation
 		if "bulbasaur" == starter_string:
 			# If level one, adjust scaling to line up with the starting (ancestral) mean
@@ -1953,8 +2002,9 @@ class MyGame(arcade.Window):
 
 			# If this process takes place after the first level, change the scaling appropriately
 			elif self.level > 1:
+				print("Current character scaling: ", self.CHARACTER_SCALING)
 				self.CHARACTER_SCALING = bulbasaur_scaling * new_mean
-				self.var = self.var * bulbasaur_scaling * var_scalar
+				self.var = new_var * bulbasaur_scaling * var_scalar
 				self.std_dev = numpy.sqrt(self.var)
 
 		# If charmander is selected, set the variance and standard deviation
@@ -1969,7 +2019,7 @@ class MyGame(arcade.Window):
 			elif self.level > 1:
 				self.CHARACTER_SCALING = charmander_scaling * new_mean
 				print("charmander updated!")
-				self.var = self.var * charmander_scaling * var_scalar
+				self.var = new_var * charmander_scaling * var_scalar
 				self.std_dev = numpy.sqrt(self.var)
 	
 		# If squirtle is chosen, set the variance and standard deviation
@@ -1983,7 +2033,7 @@ class MyGame(arcade.Window):
 			# If this process takes place after the first level, change the scaling appropriately
 			elif self.level > 1:
 				self.CHARACTER_SCALING = squirtle_scaling * new_mean
-				self.var = self.var * squirtle_scaling * 0.01
+				self.var = new_var * squirtle_scaling * var_scalar
 				self.std_dev = numpy.sqrt(self.var)
 		
 		# In the event that the variance is negative (or zero), set it to a teensy number instead
@@ -2152,7 +2202,7 @@ class MyGame(arcade.Window):
 
 			if self.extinction:
 				extinction_text = f"EXTINCTION!"
-				arcade.draw_text(extinction_text, 100 + self.view_left, 300 + self.view_bottom, 
+				arcade.draw_text(extinction_text, 200 + self.view_left, 200 + self.view_bottom, 
 				             arcade.csscolor.WHITE, 60)
 
 		if self.current_state >= 7:
@@ -2190,7 +2240,7 @@ class MyGame(arcade.Window):
 		
 
 
-		if self.ready_to_breed == False:
+		if self.ready_to_breed == False and (self.level_complete == False):
 			self.player_list.draw()
 
 		# Draw the current mean and variance
@@ -2225,13 +2275,14 @@ class MyGame(arcade.Window):
 		if self.ready_to_breed == True:
 			viewport = arcade.get_viewport()
 
-			if self.breeding_histogram_drawn == False:
+			self.breeding = True
+			if self.breeding_histogram_drawn == False and (self.breeding == True):
 				self.define_all_ten_sprites_images()
 				self.give_hist_coordinates_new(viewport)
-				
+				#self.breed()
 				self.scale_everyone()
 				self.draw_non_choosable_histogram()
-				
+				self.breeding = False
 				
 				self.breeding_histogram_drawn = True
 			
@@ -2241,6 +2292,8 @@ class MyGame(arcade.Window):
 
 				self.go_to_next_level = True
 				self.level_complete = False
+
+
 
 	
 
@@ -2303,61 +2356,66 @@ class MyGame(arcade.Window):
 		#self.honeymoon_ready = True
 		self.set_breeding_coordinates(current_viewport)
 
-		for i in range(len(self.experimental_list)):
-		    g = i - 1
-
-		    breeding_coordinates = self.breeding_coordinates
-
-		    if self.experimental_list[g].mating_point == False:
-		        # Establish semi-permanent mating coordinates for each organism
-		        self.experimental_list[g].point = numpy.random.randint(0, len(breeding_coordinates))
+		for i in range(len(self.histogram_list)):
 		    
-		    # Shorthand
-		    point = self.experimental_list[g].point
+			g = i - 1
 
-		    print("This guy's point: ", point)
-		    # Flip a switch so that all organisms don't continue to get new points
-		    if breeding_coordinates[point] not in self.used_coords:
-		        self.experimental_list[g].mating_point = True
+			if not self.histogram_list[g] == self.focal_organism:
+				breeding_coordinates = self.breeding_coordinates
+
+				if self.histogram_list[g].mating_point == False:
+					# Establish semi-permanent mating coordinates for each organism
+					self.histogram_list[g].point = numpy.random.randint(0, len(breeding_coordinates))
+
+			    
+				# Shorthand
+				point = self.histogram_list[g].point
 
 
-		    # If you reach the coordinate, stop moving left and right
-		    if self.experimental_list[g].center_x == breeding_coordinates[point][0]:
-		        self.experimental_list[g].change_x = 0
-		        self.experimental_list[g].paired_x = True
+				print("This guy's point: ", point)
 
-		    # If the coordinate is to your left, move left
-		    elif self.experimental_list[g].center_x > (breeding_coordinates[point][0]):
-		        self.experimental_list[g].change_x = -5
+				# Flip a switch so that all organisms don't continue to get new points
+				if breeding_coordinates[point] not in self.used_coords:
+				    self.histogram_list[g].mating_point = True
 
-		    # If the coordinate is to your right, move right
-		    elif self.experimental_list[g].center_x < (breeding_coordinates[point][0]):
-		        self.experimental_list[g].change_x = 5
 
-		    # If the coordinate is below you, move south
-		    if self.experimental_list[g].center_y > (breeding_coordinates[point][1]):
-		        self.experimental_list[g].change_y = -5
+				# If you reach the coordinate, stop moving left and right
+				if self.histogram_list[g].center_x == breeding_coordinates[point][0]:
+				    self.histogram_list[g].change_x = 0
+				    self.histogram_list[g].paired_x = True
 
-		    # If the coordinate is above you, move up
-		    elif self.experimental_list[g].center_y < (breeding_coordinates[point][1]):
-		        self.experimental_list[g].change_y = 5
-		    else:
-		    	# If you've reached the coordinate, stay there
-		        self.experimental_list[g].change_y = 0
-		        self.experimental_list[g].paired_y = True
+				# If the coordinate is to your left, move left
+				elif self.histogram_list[g].center_x > (breeding_coordinates[point][0]):
+				    self.histogram_list[g].change_x = -5
+
+				# If the coordinate is to your right, move right
+				elif self.histogram_list[g].center_x < (breeding_coordinates[point][0]):
+				    self.histogram_list[g].change_x = 5
+
+				# If the coordinate is below you, move south
+				if self.histogram_list[g].center_y > (breeding_coordinates[point][1]):
+				    self.histogram_list[g].change_y = -5
+
+				# If the coordinate is above you, move up
+				elif self.histogram_list[g].center_y < (breeding_coordinates[point][1]):
+				    self.histogram_list[g].change_y = 5
+				else:
+					# If you've reached the coordinate, stay there
+				    self.histogram_list[g].change_y = 0
+				    self.histogram_list[g].paired_y = True
 
 		    
 
-		    self.used_coords.append(breeding_coordinates[point])
-		if not self.paired_count >= len(self.experimental_list):
+			self.used_coords.append(breeding_coordinates[point])
+		if not self.paired_count >= 5:
 		    self.paired_count = 0
 
-		    for i in self.experimental_list:
+		    for i in self.histogram_list:
 		        if (i.paired_y and i.paired_x) == True:
 		            self.paired_count += 1
 		    print("Pre-honeymoon but really close!")
 
-		if self.paired_count >= len(self.experimental_list):
+		if self.paired_count >= len(self.histogram_list):
 		    print("At the honeymoon!")
 		    self.honeymoon()
 			
@@ -2547,7 +2605,7 @@ class MyGame(arcade.Window):
 			if key == arcade.key.UP or key == arcade.key.W:
 				for org in self.player_list:
 					if org.physics_engine.can_jump():
-						org.change_y = int(JUMP_SPEED)
+						org.change_y = org.jump
 
 			# When the left key is pressed
 			if key == arcade.key.LEFT or key == arcade.key.A:
@@ -2564,16 +2622,58 @@ class MyGame(arcade.Window):
 					# Go right at a speed equal to the constant set at the beginning
 					org.change_x = int(ORGANISM_MEAN_MOVEMENT_SPEED)
 
+			if key == arcade.key.KEY_1:
+			    if self.organism_var1_sprite in self.player_list:
+			        self.focal_organism = self.organism_var1_sprite
+			        print("Key noted!")
+			if key == arcade.key.KEY_2:
+			    if self.organism_var2_sprite in self.player_list:
+			        self.focal_organism = self.organism_var2_sprite
+			if key == arcade.key.KEY_3:
+			    if self.organism_var3_sprite in self.player_list:
+			        self.focal_organism = self.organism_var3_sprite
+			if key == arcade.key.KEY_4:
+			    if self.organism_var4_sprite in self.player_list:
+			        self.focal_organism = self.organism_var4_sprite
+			if key == arcade.key.KEY_5:
+			    if self.organism_var5_sprite in self.player_list:
+			        self.focal_organism = self.organism_var5_sprite
+			        print("Key noted!")
+			if key == arcade.key.KEY_6:
+			    if self.organism_var6_sprite in self.player_list:
+			        self.focal_organism = self.organism_var6_sprite
+			if key == arcade.key.KEY_7:
+			    if self.organism_var7_sprite in self.player_list:
+			        self.focal_organism = self.organism_var7_sprite
+			if key == arcade.key.KEY_8:
+			    if self.organism_var8_sprite in self.player_list:
+			        self.focal_organism = self.organism_var8_sprite
+			if key == arcade.key.KEY_9:
+			    if self.organism_var9_sprite in self.player_list:
+			        self.focal_organism = self.organism_var9_sprite
+			if key == arcade.key.KEY_0:
+			    if self.organism_var10_sprite in self.player_list:
+			        self.focal_organism = self.organism_var10_sprite
+
+			self.focal_organism.alpha = 255
+
+			for org in self.player_list:
+				if org != self.focal_organism:
+					org.alpha = 50
+
 			# Start enemies moving the moment a player presses a key
 			if key:
 				# Check all enemies
 				for enemy in self.enemy_list:
 					# Change the x
-					enemy.change_x = int(ENEMY_MOVEMENT_SPEED)
+					enemy.change_x = int(enemy.speed)
+					enemy.change_y = int(numpy.random.randint(0,20))
 
 					# If the enemy 
 					if (enemy.center_x > self.darwin_sprite.center_x) or (enemy.center_y < current_viewport[2]) or (enemy.center_y > (current_viewport[2] + current_viewport[3])):
 					    enemy.remove_from_sprite_lists()
+
+
 					
 
 
@@ -2604,13 +2704,20 @@ class MyGame(arcade.Window):
 	def update(self, delta_time):
 		if self.current_state == 7:
 
+			if self.ready_to_breed:
+				self.histogram_list.update()
+
+
 			if self.focal_organism not in self.player_list:
 				# Pick a random, existing player who's still alive to change to
-				if len(self.player_list) > 0:
+				if len(self.player_list) > 1:
 					random_selection = numpy.random.randint(0, len(self.player_list)-1)
 
 					# The randomly selected player becomes the new focal organism
 					self.focal_organism = self.player_list[random_selection]
+				elif len(self.player_list) == 1:
+					self.focal_organism = self.player_list[0]
+
 				else:
 					self.extinction = True
 				
@@ -2630,9 +2737,7 @@ class MyGame(arcade.Window):
 				enemy_hit_list = arcade.check_for_collision_with_list(enemy, self.wall_list)
 				enemy_wall_hit_list_master.append(enemy_hit_list)
 
-			for enemy_hit_list in enemy_wall_hit_list_master:
-				for enemy in enemy_hit_list:
-					enemy.change_y += 20
+			
 
 
 
@@ -2700,6 +2805,7 @@ class MyGame(arcade.Window):
 						player.dead = True
 
 			            # Remove the player if they were hit
+						self.select.play()
 						player.remove_from_sprite_lists()
 
 
@@ -2760,17 +2866,42 @@ class MyGame(arcade.Window):
 
 	def start_new_level(self, level):
 
-		# Resets this for the next go-around
-		self.go_to_next_level = False
-		self.ready_to_breed = False
-
-		#self.get_change_after_selection()
-		self.setup(level, self.CHARACTER_SCALING)
-		self.current_state = 6
+		self.ready_to_breed = True
+		
+		viewport = arcade.get_viewport()
 		self.define_all_ten_sprites_images()
-		self.update_scaling(self.starter_string)
+		self.give_hist_coordinates_new(viewport)
+		self.draw_non_choosable_histogram()
 		self.scale_everyone()
-		self.level += 1
+		for i in self.histogram_list:
+			for texture in i.textures:
+				texture.scale = i.scale
+		self.histogram_list.draw()
+		self.ready_to_breed = False
+		if self.ready_to_breed == False:
+			# Resets this for the next go-around
+			self.go_to_next_level = False
+			
+
+			#self.get_change_after_selection()
+			self.level += 1
+			self.setup(level, self.CHARACTER_SCALING)
+			self.new_mean = pop_keeper.mean_phenotypic_trait_value_list[self.level-1]
+			self.current_state = 6
+			self.define_all_ten_sprites_images()
+			self.update_scaling(self.starter_string)
+			self.scale_everyone()
+			for i in self.player_list:
+				if self.starter_string == "bulbasaur":
+					i.jump = i.scale * 300
+				elif self.starter_string == "charmander":
+					i.jump = i.scale * 300
+				elif self.starter_string == "squirtle":
+					i.jump = i.scale * 150
+			
+			self.make_enemies(self.level)
+
+			self.end_of_level = self.level * 1000
 
 
 

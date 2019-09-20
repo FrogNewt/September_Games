@@ -46,7 +46,7 @@ TEXTURE_RIGHT = 1
 
 # Constants used to scale stationary objects
 CLOUD_SCALING = 0.05
-MOUNTAIN_SCALING = 0.5
+
 BOUNDARY_TREE_SCALING = 0.40
 
 
@@ -355,9 +355,10 @@ class MyGame(arcade.Window):
 
 		### SET UP MOUNTAIN ###
 
+		self.MOUNTAIN_SCALING = numpy.random.uniform(0.5, 3)
 		# This sets up a mountain as a climbing obstacle if smaller organisms are being (deliberately)...
 		# ...given a hard time
-		mountain = arcade.Sprite("images/mountain.png", MOUNTAIN_SCALING)
+		mountain = arcade.Sprite("images/mountain.png", self.MOUNTAIN_SCALING)
 
 		# Gives the mountain coordinates based on random generation
 		mountain.center_x = numpy.random.randint(200, self.end_of_level)
